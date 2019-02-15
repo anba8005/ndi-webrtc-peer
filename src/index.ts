@@ -1,14 +1,14 @@
-import SimplePeer from "simple-peer";
-import IO from "socket.io-client";
-import { NDIMediaStream } from "./NDIMediaStream";
-import { NDIMediaTrack } from "./NDIMediaTrack";
-import { WRTC } from "./WRTC";
+import SimplePeer from 'simple-peer';
+import IO from 'socket.io-client';
+import { NDIMediaStream } from './NDIMediaStream';
+import { NDIMediaTrack } from './NDIMediaTrack';
+import { WRTC } from './WRTC';
 
 let localId: string = null;
 let remoteId: string = null;
 let peer: any = null;
 
-let name = "ANBA8005-DESKTOP (OBS)";
+let name = 'ANBA8005-DESKTOP (OBS)';
 let stream = new NDIMediaStream(new NDIMediaTrack(name));
 const streamTimeout = 5000;
 
@@ -17,8 +17,8 @@ function getTestOptions(): any {
 		config: {
 			ndi: {
 				outputEnabled: false,
-				outputName: "TEST"
-			}
+				outputName: 'TEST',
+			},
 		},
 		initiator: true,
 		stream,
@@ -26,26 +26,26 @@ function getTestOptions(): any {
 	};
 }
 
-const io = IO("http://localhost:5000/");
-io.on("connect", () => {
-	io.emit("emit", "p2p.join", {
-		room: "test"
+const io = IO('http://localhost:5000/');
+io.on('connect', () => {
+	io.emit('emit', 'p2p.join', {
+		room: 'test',
 	});
 });
-io.on("p2p.bridged", (bridge: any) => {
+io.on('p2p.bridged', (bridge: any) => {
 	localId = bridge.local;
 	remoteId = bridge.remote;
 	//
-	io.on("p2p.signal", (signal: any) => {
+	io.on('p2p.signal', (signal: any) => {
 		if (signal.id === remoteId) {
 			onSignal(signal.signal);
 		}
 	});
 	//
-	io.on("p2p.hangup", () => {
+	io.on('p2p.hangup', () => {
 		peer.destroy();
-		io.off("p2p.hangup");
-		io.off("p2p.signal");
+		io.off('p2p.hangup');
+		io.off('p2p.signal');
 	});
 
 	//
@@ -55,30 +55,30 @@ io.on("p2p.bridged", (bridge: any) => {
 function sendSignal(signal: any) {
 	// console.log("sending ");
 	// console.log(signal);
-	io.emit("broadcast", "p2p.signal", {
-		id: localId, signal
+	io.emit('broadcast', 'p2p.signal', {
+		id: localId, signal,
 	});
 }
 
 function bridged() {
 	peer = new SimplePeer(getTestOptions());
-	peer.on("signal", sendSignal);
-	peer.on("error", (e: Error) => {
-		console.log("+++++++++++++++++++++peer error -> ");
+	peer.on('signal', sendSignal);
+	peer.on('error', (e: Error) => {
+		console.log('+++++++++++++++++++++peer error -> ');
 		console.log(e);
 	});
-	peer.on("stream", (s: any) => {
-		console.log("++++++++++++++++++++++++HAS STREAM");
+	peer.on('stream', (s: any) => {
+		console.log('++++++++++++++++++++++++HAS STREAM');
 		// const p = peer as any;
 		// p.getStats((err: any, ss: any) => {
 		// 	console.log(ss);
 		// });
 	});
-	peer.on("connect", (s: any) => {
-		console.log("++++++++++++++++++++++++++=CONNECTED");
+	peer.on('connect', (s: any) => {
+		console.log('++++++++++++++++++++++++++=CONNECTED');
 		setTimeout(() => {
 			const test = {
-				test: "HELLO"
+				test: 'HELLO',
 			};
 			const p = peer as any;
 			p.send(JSON.stringify(test));
@@ -86,16 +86,16 @@ function bridged() {
 			replaceTrack();
 		}, 5000);
 	});
-	peer.on("data", (d: any) => {
+	peer.on('data', (d: any) => {
 		// console.log(JSON.parse(d));
 	});
 }
 
 function replaceTrack() {
-	if (name === "ANBA8005-DESKTOP (OBS)") {
-		name = "ANBA8005-DESKTOP (OBS Preview)";
+	if (name === 'ANBA8005-DESKTOP (OBS)') {
+		name = 'ANBA8005-DESKTOP (OBS Preview)';
 	} else {
-		name = "ANBA8005-DESKTOP (OBS)";
+		name = 'ANBA8005-DESKTOP (OBS)';
 	}
 	const newTrack = new NDIMediaTrack(name);
 	const p = peer as any;
@@ -107,7 +107,7 @@ function replaceTrack() {
 
 function addStream() {
 	const p = peer as any;
-	stream = new NDIMediaStream(new NDIMediaTrack("ANBA8005-DESKTOP (OBS)"));
+	stream = new NDIMediaStream(new NDIMediaTrack('ANBA8005-DESKTOP (OBS)'));
 	p.addStream(stream);
 	setTimeout(() => {
 		removeStream();

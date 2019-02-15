@@ -1,6 +1,6 @@
-import { ChildProcess, spawn } from "child_process";
-import { createInterface, ReadLine } from "readline";
-import { RTCPeerConnection } from "./RTCPeerConnection";
+import { ChildProcess, spawn } from 'child_process';
+import { createInterface, ReadLine } from 'readline';
+import { RTCPeerConnection } from './RTCPeerConnection';
 
 interface IRequest {
 	command: string;
@@ -36,25 +36,25 @@ export class Signaling {
 	}
 
 	public spawn() {
-		this.process = spawn("gyvaitv_webrtc", this.createArguments());
-		this.process.on("exit", (code, signal) => this.onProcessExit(code, signal));
+		this.process = spawn('gyvaitv_webrtc', this.createArguments());
+		this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
 		//
-		this.process.stderr.setEncoding("utf-8");
-		this.process.stdout.setEncoding("utf-8");
-		this.process.stdin.setDefaultEncoding("utf-8");
+		this.process.stderr.setEncoding('utf-8');
+		this.process.stdout.setEncoding('utf-8');
+		this.process.stdin.setDefaultEncoding('utf-8');
 		//
-		this.process.stderr.on("data", (data) => this.onProcessStdErr(data));
+		this.process.stderr.on('data', (data) => this.onProcessStdErr(data));
 		this.reader = createInterface({
 			input: this.process.stdout,
 			output: null,
 			terminal: false,
 		});
-		this.reader.on("line", (line) => this.onProcessLine(line));
+		this.reader.on('line', (line) => this.onProcessLine(line));
 	}
 
 	public destroy() {
 		this.reader.close();
-		this.writeLine("STOP\n");
+		this.writeLine('STOP\n');
 	}
 
 	public request<T>(command: string, payload: object): Promise<T> {
@@ -63,7 +63,7 @@ export class Signaling {
 			const correlation = this.lastCorrelation;
 			//
 			const json: IRequest = { command, payload, correlation };
-			this.writeLine(JSON.stringify(json) + "\n");
+			this.writeLine(JSON.stringify(json) + '\n');
 			//
 			const resolution: IResolution = { reject, resolve };
 			this.resolutions.set(correlation, resolution);
@@ -100,25 +100,25 @@ export class Signaling {
 				resolution.reject(reply.error);
 			}
 		} else {
-			this.log("Resolution for correlation " + reply.correlation + " not found");
+			this.log('Resolution for correlation ' + reply.correlation + ' not found');
 		}
 	}
 
 	private processState(state: IState) {
 		switch (state.command) {
-			case "OnIceConnectionChange":
+			case 'OnIceConnectionChange':
 				const icc = (state.payload as any).state;
 				this.peer._updateIceConnectionState(icc);
 				break;
-			case "OnIceGatheringChange":
+			case 'OnIceGatheringChange':
 				const igc = (state.payload as any).state;
 				this.peer._updateIceGatheringState(igc);
 				break;
-			case "OnSignalingChange":
+			case 'OnSignalingChange':
 				const sc = (state.payload as any).state;
 				this.peer._updateSignalingState(sc);
 				break;
-			case "OnIceCandidate":
+			case 'OnIceCandidate':
 				if (this.peer.onicecandidate) {
 					this.peer.onicecandidate({ candidate: state.payload });
 				}
@@ -128,7 +128,7 @@ export class Signaling {
 			// 		this.peer.ondatachannel({ channel: { label: "name" } });
 			// 	}
 			// 	break;
-			case "OnDataChannelStateChange": {
+			case 'OnDataChannelStateChange': {
 				const channel = this.peer._getChannel();
 				if (channel) {
 					const dcsc = (state.payload as any).state;
@@ -136,20 +136,20 @@ export class Signaling {
 				}
 				break;
 			}
-			case "OnDataChannelMessage": {
+			case 'OnDataChannelMessage': {
 				const channel = this.peer._getChannel();
 				if (channel && channel.onmessage) {
 					channel.onmessage(state.payload);
 				}
 				break;
 			}
-			case "OnAddTrack":
+			case 'OnAddTrack':
 				if (this.peer.ontrack) {
 					this.peer.ontrack(state.payload);
 				}
 				break;
 			default:
-				this.log("Invalid state" + state.payload);
+				this.log('Invalid state' + state.payload);
 				console.log(state);
 		}
 
@@ -164,9 +164,9 @@ export class Signaling {
 	}
 
 	private onProcessExit(code: number, signal: string) {
-		console.log("exit " + code);
+		console.log('exit ' + code);
 		for (const value of this.resolutions.values()) {
-			value.reject("signaling closed");
+			value.reject('signaling closed');
 		}
 	}
 

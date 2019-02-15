@@ -1,4 +1,4 @@
-import { NDIMediaStream } from "./NDIMediaStream";
+import { NDIMediaStream } from './NDIMediaStream';
 
 let uniqueId = 0;
 function createUniqueId() {

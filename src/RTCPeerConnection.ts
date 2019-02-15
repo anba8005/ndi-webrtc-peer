@@ -1,15 +1,14 @@
-import { RTCDataChannel } from "./RTCDataChannel";
-import { RTCIceCandidate } from "./RTCIceCandidate";
-import { RTCSessionDescription } from "./RTCSessionDescription";
-import { Signaling } from "./Signaling";
-import { NDIMediaTrack } from "./NDIMediaTrack";
-import { NDIMediaStream } from "./NDIMediaStream";
+import { RTCDataChannel } from './RTCDataChannel';
+import { RTCIceCandidate } from './RTCIceCandidate';
+import { RTCSessionDescription } from './RTCSessionDescription';
+import { Signaling } from './Signaling';
+import { NDIMediaTrack } from './NDIMediaTrack';
 
-const iceConnectionStates = ["new", "checking", "connected",
-	"completed", "disconnected", "failed", "closed"];
-const iceGatheringStates = ["new", "gathering", "complete"];
-const signalingStates = ["stable", "have-local-offer", "have-remote-offer",
-	"have-local-pranswer", "have-remote-pranswer", "closed"];
+const iceConnectionStates = ['new', 'checking', 'connected',
+	'completed', 'disconnected', 'failed', 'closed'];
+const iceGatheringStates = ['new', 'gathering', 'complete'];
+const signalingStates = ['stable', 'have-local-offer', 'have-remote-offer',
+	'have-local-pranswer', 'have-remote-pranswer', 'closed'];
 
 export interface INDIConfiguration {
 	srcName?: string;
@@ -48,33 +47,33 @@ export class RTCPeerConnection {
 	}
 
 	public setLocalDescription(desc: RTCSessionDescription): Promise<void> {
-		return this.request<void>("setLocalDescription", desc).then(() => {
+		return this.request<void>('setLocalDescription', desc).then(() => {
 			this.localDescription = desc;
 		});
 	}
 
 	public setRemoteDescription(desc: RTCSessionDescription): Promise<void> {
-		return this.request<void>("setRemoteDescription", desc).then(() => {
+		return this.request<void>('setRemoteDescription', desc).then(() => {
 			this.remoteDescription = desc;
 		});
 	}
 
 	public async createAnswer(answer: any): Promise<RTCSessionDescription> {
-		return this.request<RTCSessionDescription>("createAnswer", answer);
+		return this.request<RTCSessionDescription>('createAnswer', answer);
 	}
 
 	public createOffer(offer: any): Promise<RTCSessionDescription> {
-		return this.request<RTCSessionDescription>("createOffer", offer);
+		return this.request<RTCSessionDescription>('createOffer', offer);
 	}
 
 	public async addIceCandidate(candidate?: RTCIceCandidate): Promise<void> {
-		return this.request<void>("addIceCandidate", candidate);
+		return this.request<void>('addIceCandidate', candidate);
 	}
 
 	public createDataChannel(name: string, config: object) {
 		if (!this.channel) {
 			this.channel = new RTCDataChannel(name, this.signaling);
-			this.request<void>("createDataChannel", {
+			this.request<void>('createDataChannel', {
 				config,
 				name,
 			}).catch((e) => {
@@ -85,13 +84,13 @@ export class RTCPeerConnection {
 	}
 
 	public getStats() {
-		return this.request<void>("getStats", {});
+		return this.request<void>('getStats', {});
 	}
 
 	public addTrack(track: NDIMediaTrack) {
 		JSON.stringify(track);
-		this.request<void>("addTrack", track).then(() => {
-			console.log("Track " + JSON.stringify(track) + " added");
+		this.request<void>('addTrack', track).then(() => {
+			console.log('Track ' + JSON.stringify(track) + ' added');
 		}).catch((e) => {
 			if (this.channel) {
 				this.channel._onError(e);
@@ -105,10 +104,10 @@ export class RTCPeerConnection {
 	}
 
 	public removeTrack(track: NDIMediaTrack) {
-		this.request<void>("removeTrack", {
-			trackId: track.id
+		this.request<void>('removeTrack', {
+			trackId: track.id,
 		}).then(() => {
-			console.log("Track " + JSON.stringify(track) + " removed");
+			console.log('Track ' + JSON.stringify(track) + ' removed');
 		}).catch((e) => {
 			if (this.channel) {
 				this.channel._onError(e);
@@ -119,8 +118,8 @@ export class RTCPeerConnection {
 	}
 
 	public replaceTrack(newTrack: NDIMediaTrack) {
-		return this.request<void>("replaceTrack", newTrack).then(() => {
-			console.log("Track replaced with " + JSON.stringify(newTrack));
+		return this.request<void>('replaceTrack', newTrack).then(() => {
+			console.log('Track replaced with ' + JSON.stringify(newTrack));
 		}).catch((e) => {
 			if (this.channel) {
 				this.channel._onError(e);
@@ -131,7 +130,7 @@ export class RTCPeerConnection {
 	}
 
 	public close() {
-		console.log("close");
+		console.log('close');
 		this.signaling.destroy();
 		this.signaling = null;
 	}
@@ -172,7 +171,7 @@ export class RTCPeerConnection {
 	}
 
 	private createNativePeer() {
-		return this.signaling.request<void>("createPeer", this.configuration);
+		return this.signaling.request<void>('createPeer', this.configuration);
 	}
 
 }

@@ -1,6 +1,6 @@
-import { Signaling } from "./Signaling";
+import { Signaling } from './Signaling';
 
-const dataChannelStates = ["connecting", "open", "closing", "closed"];
+const dataChannelStates = ['connecting', 'open', 'closing', 'closed'];
 
 export class RTCDataChannel {
 
@@ -21,26 +21,26 @@ export class RTCDataChannel {
 	}
 
 	public send(data: any) {
-		return this.signaling.request<void>("sendDataMessage", {
-			data
+		return this.signaling.request<void>('sendDataMessage', {
+			data,
 		}).catch((e) => {
 			this._onError(e);
 		});
 	}
 
 	public close() {
-
+		//
 	}
 
 	public _updateDataChannelState(state: number) {
 		this.readyState = dataChannelStates[state];
 		switch (this.readyState) {
-			case "open":
+			case 'open':
 				if (this.onopen) {
 					this.onopen();
 				}
 				break;
-			case "closed":
+			case 'closed':
 				if (this.onclose) {
 					this.onclose();
 				}

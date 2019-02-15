@@ -1,4 +1,4 @@
-import { NDIMediaTrack } from "./NDIMediaTrack";
+import { NDIMediaTrack } from './NDIMediaTrack';
 
 export class NDIMediaStream {
 
