@@ -36,7 +36,7 @@ export class Signaling {
 	}
 
 	public spawn() {
-		this.process = spawn('gyvaitv_webrtc', this.createArguments());
+		this.process = spawn('ndi-webrtc-peer-worker', this.createArguments());
 		this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
 		//
 		this.process.stderr.setEncoding('utf-8');

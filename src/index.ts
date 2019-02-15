@@ -83,7 +83,7 @@ function bridged() {
 			const p = peer as any;
 			p.send(JSON.stringify(test));
 			// removeStream();
-			replaceTrack();
+			// replaceTrack();
 		}, 5000);
 	});
 	peer.on('data', (d: any) => {
