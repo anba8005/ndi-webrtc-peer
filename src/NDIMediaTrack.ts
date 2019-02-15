@@ -6,19 +6,30 @@ function createUniqueId() {
 	return uniqueId;
 }
 
+export interface AudioOptions {
+	autoGainControl?: boolean;
+	noiseSuppression?: boolean;
+	highPassFilter?: boolean;
+	echoCancelation?: boolean;
+	typingDetection?: boolean;
+	residualEchoDetector?: boolean;
+}
+
 export class NDIMediaTrack {
 
-	public audio: boolean;
 	public id: string;
 	public name: string;
 	public video: boolean;
+	public audio: boolean;
+	public audioOptions: AudioOptions;
 
 	public replaceTrack?: (oldTrack: NDIMediaTrack, newTrack: NDIMediaTrack, stream: NDIMediaStream) => Promise<void>;
 
-	constructor(name: string, audio = true, video = true) {
-		this.audio = audio;
+	constructor(name: string, video = true, audio = true, audioOptions: AudioOptions = {}) {
 		this.id = createUniqueId().toString();
 		this.name = name;
 		this.video = video;
+		this.audio = audio;
+		this.audioOptions = audioOptions;
 	}
 }

@@ -9,7 +9,7 @@ let remoteId: string = null;
 let peer: any = null;
 
 let name = 'ANBA8005-DESKTOP (OBS)';
-let stream = new NDIMediaStream(new NDIMediaTrack(name));
+let stream = new NDIMediaStream(new NDIMediaTrack(name, true, true, { echoCancelation: false}));
 const streamTimeout = 5000;
 
 function getTestOptions(): any {
