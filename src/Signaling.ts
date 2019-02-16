@@ -123,11 +123,10 @@ export class Signaling {
 					this.peer.onicecandidate({ candidate: state.payload });
 				}
 				break;
-			// case "OnDataChannel":
-			// 	if (this.peer.ondatachannel) {
-			// 		this.peer.ondatachannel({ channel: { label: "name" } });
-			// 	}
-			// 	break;
+			case 'OnDataChannel':
+				const name = (state.payload as any).name;
+				this.peer._onDataChannel(name);
+				break;
 			case 'OnDataChannelStateChange': {
 				const channel = this.peer._getChannel();
 				if (channel) {
@@ -147,6 +146,8 @@ export class Signaling {
 				if (this.peer.ontrack) {
 					this.peer.ontrack(state.payload);
 				}
+				break;
+			case 'OnRemoveTrack':
 				break;
 			default:
 				this.log('Invalid state' + state.payload);

@@ -3,16 +3,13 @@ import { RTCIceCandidate } from './RTCIceCandidate';
 import { RTCSessionDescription } from './RTCSessionDescription';
 import { Signaling } from './Signaling';
 import { NDIMediaTrack } from './NDIMediaTrack';
+import { NDIPeerConfiguration } from './NDIPeerConfiguration';
 
 const iceConnectionStates = ['new', 'checking', 'connected',
 	'completed', 'disconnected', 'failed', 'closed'];
 const iceGatheringStates = ['new', 'gathering', 'complete'];
 const signalingStates = ['stable', 'have-local-offer', 'have-remote-offer',
 	'have-local-pranswer', 'have-remote-pranswer', 'closed'];
-
-export interface INDIConfiguration {
-	srcName?: string;
-}
 
 export class RTCPeerConnection {
 
@@ -39,7 +36,7 @@ export class RTCPeerConnection {
 
 	//
 
-	constructor(private configuration: RTCConfiguration | INDIConfiguration) {
+	constructor(private configuration: NDIPeerConfiguration) {
 		this.signaling = new Signaling(this);
 		this.signaling.spawn();
 		//
@@ -155,6 +152,13 @@ export class RTCPeerConnection {
 		this.signalingState = signalingStates[state] as RTCSignalingState;
 		if (this.onsignalingstatechange) {
 			this.onsignalingstatechange();
+		}
+	}
+
+	public _onDataChannel(name: string) {
+		if (!this.channel) {
+			this.channel = new RTCDataChannel(name, this.signaling);
+			this.ondatachannel({ channel: this.channel });
 		}
 	}
 

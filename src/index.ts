@@ -3,6 +3,7 @@ import IO from 'socket.io-client';
 import { NDIMediaStream } from './NDIMediaStream';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { WRTC } from './WRTC';
+import { createDefaultConfiguration } from './NDIPeerConfiguration';
 
 let localId: string = null;
 let remoteId: string = null;
@@ -12,13 +13,19 @@ let name = 'ANBA8005-DESKTOP (OBS)';
 let stream = new NDIMediaStream(new NDIMediaTrack(name, true, true, { echoCancelation: false}));
 const streamTimeout = 5000;
 
+const config = createDefaultConfiguration();
+config.ndi.name = 'TEST';
+
 function getTestOptions(): any {
 	return {
-		config: {
-			ndi: {
-				outputEnabled: false,
-				outputName: 'TEST',
-			},
+		config,
+		answerConstraints: {
+			// offerToReceiveVideo: false,
+			// offerToReceiveAudio: false,
+		},
+		offerConstraints: {
+			// offerToReceiveVideo: false,
+			// offerToReceiveAudio: false,
 		},
 		initiator: true,
 		stream,
@@ -87,7 +94,7 @@ function bridged() {
 		}, 5000);
 	});
 	peer.on('data', (d: any) => {
-		// console.log(JSON.parse(d));
+		//  console.log(JSON.parse(d));
 	});
 }
 
