@@ -1,9 +1,7 @@
 import { NDIMediaTrack } from './NDIMediaTrack';
 
 export class NDIMediaStream {
-
-	constructor(private track: NDIMediaTrack) {
-	}
+	constructor(private track: NDIMediaTrack) {}
 
 	public getTracks() {
 		return [this.track];
@@ -12,5 +10,4 @@ export class NDIMediaStream {
 	public getTrack() {
 		return this.track;
 	}
-
 }

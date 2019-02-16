@@ -16,16 +16,24 @@ export interface AudioOptions {
 }
 
 export class NDIMediaTrack {
-
 	public id: string;
 	public name: string;
 	public video: boolean;
 	public audio: boolean;
 	public audioOptions: AudioOptions;
 
-	public replaceTrack?: (oldTrack: NDIMediaTrack, newTrack: NDIMediaTrack, stream: NDIMediaStream) => Promise<void>;
+	public replaceTrack?: (
+		oldTrack: NDIMediaTrack,
+		newTrack: NDIMediaTrack,
+		stream: NDIMediaStream,
+	) => Promise<void>;
 
-	constructor(name: string, video = true, audio = true, audioOptions: AudioOptions = {}) {
+	constructor(
+		name: string,
+		video = true,
+		audio = true,
+		audioOptions: AudioOptions = {},
+	) {
 		this.id = createUniqueId().toString();
 		this.name = name;
 		this.video = video;

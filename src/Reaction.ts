@@ -1,5 +1,4 @@
 export class Reaction {
-
 	private promiseValue: Promise<void>;
 	private resolve: any;
 	private reject: any;

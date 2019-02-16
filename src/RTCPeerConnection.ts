@@ -5,14 +5,26 @@ import { Signaling } from './Signaling';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { NDIPeerConfiguration } from './NDIPeerConfiguration';
 
-const iceConnectionStates = ['new', 'checking', 'connected',
-	'completed', 'disconnected', 'failed', 'closed'];
+const iceConnectionStates = [
+	'new',
+	'checking',
+	'connected',
+	'completed',
+	'disconnected',
+	'failed',
+	'closed',
+];
 const iceGatheringStates = ['new', 'gathering', 'complete'];
-const signalingStates = ['stable', 'have-local-offer', 'have-remote-offer',
-	'have-local-pranswer', 'have-remote-pranswer', 'closed'];
+const signalingStates = [
+	'stable',
+	'have-local-offer',
+	'have-remote-offer',
+	'have-local-pranswer',
+	'have-remote-pranswer',
+	'closed',
+];
 
 export class RTCPeerConnection {
-
 	public remoteDescription?: RTCSessionDescription;
 	public localDescription?: RTCSessionDescription;
 	public iceConnectionState: RTCIceConnectionState;
@@ -73,7 +85,7 @@ export class RTCPeerConnection {
 			this.request<void>('createDataChannel', {
 				config,
 				name,
-			}).catch((e) => {
+			}).catch(e => {
 				this.channel._onError(e);
 			});
 		}
@@ -86,15 +98,17 @@ export class RTCPeerConnection {
 
 	public addTrack(track: NDIMediaTrack) {
 		JSON.stringify(track);
-		this.request<void>('addTrack', track).then(() => {
-			console.log('Track ' + JSON.stringify(track) + ' added');
-		}).catch((e) => {
-			if (this.channel) {
-				this.channel._onError(e);
-			} else {
-				console.log(e);
-			}
-		});
+		this.request<void>('addTrack', track)
+			.then(() => {
+				console.log('Track ' + JSON.stringify(track) + ' added');
+			})
+			.catch(e => {
+				if (this.channel) {
+					this.channel._onError(e);
+				} else {
+					console.log(e);
+				}
+			});
 		//
 		track.replaceTrack = this.replaceTrack.bind(this);
 		return track;
@@ -103,27 +117,31 @@ export class RTCPeerConnection {
 	public removeTrack(track: NDIMediaTrack) {
 		this.request<void>('removeTrack', {
 			trackId: track.id,
-		}).then(() => {
-			console.log('Track ' + JSON.stringify(track) + ' removed');
-		}).catch((e) => {
-			if (this.channel) {
-				this.channel._onError(e);
-			} else {
-				console.log(e);
-			}
-		});
+		})
+			.then(() => {
+				console.log('Track ' + JSON.stringify(track) + ' removed');
+			})
+			.catch(e => {
+				if (this.channel) {
+					this.channel._onError(e);
+				} else {
+					console.log(e);
+				}
+			});
 	}
 
 	public replaceTrack(newTrack: NDIMediaTrack) {
-		return this.request<void>('replaceTrack', newTrack).then(() => {
-			console.log('Track replaced with ' + JSON.stringify(newTrack));
-		}).catch((e) => {
-			if (this.channel) {
-				this.channel._onError(e);
-			} else {
-				console.log(e);
-			}
-		});
+		return this.request<void>('replaceTrack', newTrack)
+			.then(() => {
+				console.log('Track replaced with ' + JSON.stringify(newTrack));
+			})
+			.catch(e => {
+				if (this.channel) {
+					this.channel._onError(e);
+				} else {
+					console.log(e);
+				}
+			});
 	}
 
 	public close() {
@@ -135,7 +153,9 @@ export class RTCPeerConnection {
 	//
 
 	public _updateIceConnectionState(state: number) {
-		this.iceConnectionState = iceConnectionStates[state] as RTCIceConnectionState;
+		this.iceConnectionState = iceConnectionStates[
+			state
+		] as RTCIceConnectionState;
 		if (this.oniceconnectionstatechange) {
 			this.oniceconnectionstatechange();
 		}
@@ -177,5 +197,4 @@ export class RTCPeerConnection {
 	private createNativePeer() {
 		return this.signaling.request<void>('createPeer', this.configuration);
 	}
-
 }

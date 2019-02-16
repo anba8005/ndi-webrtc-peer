@@ -10,7 +10,9 @@ let remoteId: string = null;
 let peer: any = null;
 
 let name = 'ANBA8005-DESKTOP (OBS)';
-let stream = new NDIMediaStream(new NDIMediaTrack(name, true, true, { echoCancelation: false}));
+let stream = new NDIMediaStream(
+	new NDIMediaTrack(name, true, true, { echoCancelation: false }),
+);
 const streamTimeout = 5000;
 
 const config = createDefaultConfiguration();
@@ -63,7 +65,8 @@ function sendSignal(signal: any) {
 	// console.log("sending ");
 	// console.log(signal);
 	io.emit('broadcast', 'p2p.signal', {
-		id: localId, signal,
+		id: localId,
+		signal,
 	});
 }
 

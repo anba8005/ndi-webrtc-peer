@@ -3,7 +3,6 @@ import { Signaling } from './Signaling';
 const dataChannelStates = ['connecting', 'open', 'closing', 'closed'];
 
 export class RTCDataChannel {
-
 	public onmessage?: (event: any) => void;
 	public onbufferedamountlow?: () => void;
 	public onopen?: () => void;
@@ -17,15 +16,16 @@ export class RTCDataChannel {
 
 	constructor(label: string, private signaling: Signaling) {
 		this.label = label;
-
 	}
 
 	public send(data: any) {
-		return this.signaling.request<void>('sendDataMessage', {
-			data,
-		}).catch((e) => {
-			this._onError(e);
-		});
+		return this.signaling
+			.request<void>('sendDataMessage', {
+				data,
+			})
+			.catch(e => {
+				this._onError(e);
+			});
 	}
 
 	public close() {

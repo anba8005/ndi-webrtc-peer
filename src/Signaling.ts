@@ -25,15 +25,13 @@ interface IResolution {
 }
 
 export class Signaling {
-
 	private process: ChildProcess;
 	private reader: ReadLine;
 
 	private lastCorrelation: number = 0;
 	private resolutions: Map<number, IResolution> = new Map();
 
-	constructor(private peer: RTCPeerConnection) {
-	}
+	constructor(private peer: RTCPeerConnection) {}
 
 	public spawn() {
 		this.process = spawn('ndi-webrtc-peer-worker', this.createArguments());
@@ -43,13 +41,13 @@ export class Signaling {
 		this.process.stdout.setEncoding('utf-8');
 		this.process.stdin.setDefaultEncoding('utf-8');
 		//
-		this.process.stderr.on('data', (data) => this.onProcessStdErr(data));
+		this.process.stderr.on('data', data => this.onProcessStdErr(data));
 		this.reader = createInterface({
 			input: this.process.stdout,
 			output: null,
 			terminal: false,
 		});
-		this.reader.on('line', (line) => this.onProcessLine(line));
+		this.reader.on('line', line => this.onProcessLine(line));
 	}
 
 	public destroy() {
@@ -87,7 +85,6 @@ export class Signaling {
 		} catch (e) {
 			this.log(e);
 		}
-
 	}
 
 	private processReply(reply: IReply) {
@@ -100,7 +97,9 @@ export class Signaling {
 				resolution.reject(reply.error);
 			}
 		} else {
-			this.log('Resolution for correlation ' + reply.correlation + ' not found');
+			this.log(
+				'Resolution for correlation ' + reply.correlation + ' not found',
+			);
 		}
 	}
 
@@ -153,7 +152,6 @@ export class Signaling {
 				this.log('Invalid state' + state.payload);
 				console.log(state);
 		}
-
 	}
 
 	private createArguments(): any[] {
