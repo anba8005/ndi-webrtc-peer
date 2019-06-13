@@ -1,0 +1,1 @@
+{"version":3,"file":"NDIPeerConfiguration.js","sourceRoot":"","sources":["../src/NDIPeerConfiguration.ts"],"names":[],"mappings":";;AAWA,SAAgB,0BAA0B;IACzC,OAAO;QACN,GAAG,EAAE;YACJ,IAAI,EAAE,MAAM;YACZ,UAAU,EAAE,KAAK;SACjB;QACD,UAAU,EAAE;YACX,EAAE,IAAI,EAAE,8BAA8B,EAAE;YACxC,EAAE,IAAI,EAAE,gDAAgD,EAAE;SAC1D;KACD,CAAC;AACH,CAAC;AAXD,gEAWC"}

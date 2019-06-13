@@ -1,0 +1,1 @@
+{"version":3,"file":"RTCIceCandidate.js","sourceRoot":"","sources":["../src/RTCIceCandidate.ts"],"names":[],"mappings":";;AAAA,MAAa,eAAe;IAK3B,YAAY,KAAU;QACrB,IAAI,CAAC,SAAS,GAAG,KAAK,CAAC,SAAS,CAAC;QACjC,IAAI,CAAC,aAAa,GAAG,KAAK,CAAC,aAAa,CAAC;QACzC,IAAI,CAAC,MAAM,GAAG,KAAK,CAAC,MAAM,CAAC;IAC5B,CAAC;CACD;AAVD,0CAUC"}

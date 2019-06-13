@@ -1,0 +1,1 @@
+{"version":3,"file":"NDIMediaStream.js","sourceRoot":"","sources":["../src/NDIMediaStream.ts"],"names":[],"mappings":";;AAEA,MAAa,cAAc;IAC1B,YAAoB,KAAoB;QAApB,UAAK,GAAL,KAAK,CAAe;IAAG,CAAC;IAErC,SAAS;QACf,OAAO,CAAC,IAAI,CAAC,KAAK,CAAC,CAAC;IACrB,CAAC;IAEM,QAAQ;QACd,OAAO,IAAI,CAAC,KAAK,CAAC;IACnB,CAAC;CACD;AAVD,wCAUC"}
