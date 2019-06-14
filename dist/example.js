@@ -29,7 +29,7 @@ function getTestOptions() {
         // offerToReceiveAudio: false,
         },
         initiator: true,
-        stream,
+        //stream,
         wrtc: WRTC_1.WRTC,
     };
 }
@@ -89,7 +89,9 @@ function bridged() {
             p.send(JSON.stringify(test));
             // removeStream();
             // replaceTrack();
-        }, 5000);
+            peer._pc.getSenders().then((s) => console.log(s));
+            peer._pc.getReceivers().then((s) => console.log(s));
+        }, 2000);
     });
     peer.on('data', (d) => {
         //  console.log(JSON.parse(d));

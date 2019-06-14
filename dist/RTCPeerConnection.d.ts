@@ -3,6 +3,7 @@ import { RTCIceCandidate } from './RTCIceCandidate';
 import { RTCSessionDescription } from './RTCSessionDescription';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { NDIPeerConfiguration } from './NDIPeerConfiguration';
+import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
 export declare class RTCPeerConnection {
     private configuration;
     remoteDescription?: RTCSessionDescription;
@@ -27,7 +28,9 @@ export declare class RTCPeerConnection {
     createOffer(offer: any): Promise<RTCSessionDescription>;
     addIceCandidate(candidate?: RTCIceCandidate): Promise<void>;
     createDataChannel(name: string, config: object): RTCDataChannel;
-    getStats(): Promise<void>;
+    getStats(): Promise<any>;
+    getSenders(): Promise<RTPSenderInterface[]>;
+    getReceivers(): Promise<RTPReceiverInterface[]>;
     addTrack(track: NDIMediaTrack): NDIMediaTrack;
     removeTrack(track: NDIMediaTrack): void;
     replaceTrack(newTrack: NDIMediaTrack): Promise<void>;

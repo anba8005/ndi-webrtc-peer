@@ -76,6 +76,12 @@ class RTCPeerConnection {
     getStats() {
         return this.request('getStats', {});
     }
+    getSenders() {
+        return this.request('getSenders', {});
+    }
+    getReceivers() {
+        return this.request('getReceivers', {});
+    }
     addTrack(track) {
         JSON.stringify(track);
         this.request('addTrack', track)

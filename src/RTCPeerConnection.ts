@@ -4,6 +4,7 @@ import { RTCSessionDescription } from './RTCSessionDescription';
 import { Signaling } from './Signaling';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { NDIPeerConfiguration } from './NDIPeerConfiguration';
+import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
 
 const iceConnectionStates = [
 	'new',
@@ -93,7 +94,15 @@ export class RTCPeerConnection {
 	}
 
 	public getStats() {
-		return this.request<void>('getStats', {});
+		return this.request<any>('getStats', {});
+	}
+
+	public getSenders() {
+		return this.request<RTPSenderInterface[]>('getSenders', {});
+	}
+
+	public getReceivers() {
+		return this.request<RTPReceiverInterface[]>('getReceivers', {});
 	}
 
 	public addTrack(track: NDIMediaTrack) {
