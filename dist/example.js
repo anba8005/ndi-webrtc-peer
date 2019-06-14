@@ -89,8 +89,14 @@ function bridged() {
             p.send(JSON.stringify(test));
             // removeStream();
             // replaceTrack();
-            peer._pc.getSenders().then((s) => console.log(s));
-            peer._pc.getReceivers().then((s) => console.log(s));
+            // peer._pc.getSenders().then((s: any) => console.log(s));
+            // peer._pc.getReceivers().then((s: any) => console.log(s));
+            peer._pc.getStatsOld((stats) => {
+                console.log(stats);
+            }, (err) => {
+                console.log('err');
+                console.log(err);
+            });
         }, 2000);
     });
     peer.on('data', (d) => {

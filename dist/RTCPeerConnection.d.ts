@@ -29,6 +29,7 @@ export declare class RTCPeerConnection {
     addIceCandidate(candidate?: RTCIceCandidate): Promise<void>;
     createDataChannel(name: string, config: object): RTCDataChannel;
     getStats(): Promise<any>;
+    getStatsOld(cb?: (stats: any) => void, err?: (error: any) => void): void;
     getSenders(): Promise<RTPSenderInterface[]>;
     getReceivers(): Promise<RTPReceiverInterface[]>;
     addTrack(track: NDIMediaTrack): NDIMediaTrack;

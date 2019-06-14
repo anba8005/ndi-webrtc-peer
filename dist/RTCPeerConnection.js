@@ -74,7 +74,18 @@ class RTCPeerConnection {
         return this.channel;
     }
     getStats() {
+        // promise api
         return this.request('getStats', {});
+    }
+    getStatsOld(cb, err) {
+        // callback api (old)
+        this.request('getStatsOld', {})
+            .then(stats => {
+            cb(stats);
+        })
+            .catch(error => {
+            err(error);
+        });
     }
     getSenders() {
         return this.request('getSenders', {});

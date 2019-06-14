@@ -94,7 +94,19 @@ export class RTCPeerConnection {
 	}
 
 	public getStats() {
+		// promise api
 		return this.request<any>('getStats', {});
+	}
+
+	public getStatsOld(cb?: (stats: any) => void, err?: (error: any) => void) {
+		// callback api (old)
+		this.request<any>('getStatsOld', {})
+			.then(stats => {
+				cb(stats);
+			})
+			.catch(error => {
+				err(error);
+			});
 	}
 
 	public getSenders() {
