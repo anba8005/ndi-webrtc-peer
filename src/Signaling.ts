@@ -1,6 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
 import { createInterface, ReadLine } from 'readline';
 import { RTCPeerConnection } from './RTCPeerConnection';
+import { logger } from './Logger';
 
 interface IRequest {
 	command: string;
@@ -150,7 +151,6 @@ export class Signaling {
 				break;
 			default:
 				this.log('Invalid state' + state.payload);
-				console.log(state);
 		}
 	}
 
@@ -159,11 +159,10 @@ export class Signaling {
 	}
 
 	private onProcessStdErr(data: string) {
-		console.log(data);
+		this.log(data);
 	}
 
 	private onProcessExit(code: number, signal: string) {
-		console.log('exit ' + code);
 		for (const value of this.resolutions.values()) {
 			value.reject('signaling closed');
 		}
@@ -175,6 +174,6 @@ export class Signaling {
 	}
 
 	private log(error: string) {
-		console.log(error);
+		logger(error);
 	}
 }

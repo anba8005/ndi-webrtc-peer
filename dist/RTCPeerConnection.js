@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const RTCDataChannel_1 = require("./RTCDataChannel");
 const Signaling_1 = require("./Signaling");
+const Logger_1 = require("./Logger");
 const iceConnectionStates = [
     'new',
     'checking',
@@ -97,14 +98,14 @@ class RTCPeerConnection {
         JSON.stringify(track);
         this.request('addTrack', track)
             .then(() => {
-            console.log('Track ' + JSON.stringify(track) + ' added');
+            this.log('Track ' + JSON.stringify(track) + ' added');
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                console.log(e);
+                this.log(e);
             }
         });
         //
@@ -116,33 +117,33 @@ class RTCPeerConnection {
             trackId: track.id,
         })
             .then(() => {
-            console.log('Track ' + JSON.stringify(track) + ' removed');
+            this.log('Track ' + JSON.stringify(track) + ' removed');
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                console.log(e);
+                this.log(e);
             }
         });
     }
     replaceTrack(newTrack) {
         return this.request('replaceTrack', newTrack)
             .then(() => {
-            console.log('Track replaced with ' + JSON.stringify(newTrack));
+            this.log('Track replaced with ' + JSON.stringify(newTrack));
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                console.log(e);
+                this.log(e);
             }
         });
     }
     close() {
-        console.log('close');
+        this.log('close');
         this.signaling.destroy();
         this.signaling = null;
     }
@@ -182,6 +183,9 @@ class RTCPeerConnection {
     }
     createNativePeer() {
         return this.signaling.request('createPeer', this.configuration);
+    }
+    log(s) {
+        Logger_1.logger(s);
     }
 }
 exports.RTCPeerConnection = RTCPeerConnection;

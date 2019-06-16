@@ -43,4 +43,5 @@ export declare class RTCPeerConnection {
     _getChannel(): RTCDataChannel;
     private request;
     private createNativePeer;
+    private log;
 }

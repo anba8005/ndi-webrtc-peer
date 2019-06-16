@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = require("child_process");
 const readline_1 = require("readline");
+const Logger_1 = require("./Logger");
 class Signaling {
     constructor(peer) {
         this.peer = peer;
@@ -121,17 +122,15 @@ class Signaling {
                 break;
             default:
                 this.log('Invalid state' + state.payload);
-                console.log(state);
         }
     }
     createArguments() {
         return [];
     }
     onProcessStdErr(data) {
-        console.log(data);
+        this.log(data);
     }
     onProcessExit(code, signal) {
-        console.log('exit ' + code);
         for (const value of this.resolutions.values()) {
             value.reject('signaling closed');
         }
@@ -141,7 +140,7 @@ class Signaling {
         this.process.stdin.write(line);
     }
     log(error) {
-        console.log(error);
+        Logger_1.logger(error);
     }
 }
 exports.Signaling = Signaling;
