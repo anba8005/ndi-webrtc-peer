@@ -4,6 +4,7 @@ import { NDIMediaStream } from './NDIMediaStream';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { WRTC } from './WRTC';
 import { createDefaultConfiguration } from './NDIPeerConfiguration';
+import { findNDISources } from './NDI';
 
 let localId: string = null;
 let remoteId: string = null;
@@ -18,6 +19,10 @@ const streamTimeout = 5000;
 const config = createDefaultConfiguration();
 config.ndi.name = 'TEST';
 
+findNDISources().then(sources => {
+	console.log(sources);
+});
+
 function getTestOptions(): any {
 	return {
 		config,
@@ -30,7 +35,7 @@ function getTestOptions(): any {
 			// offerToReceiveAudio: false,
 		},
 		initiator: true,
-		//stream,
+		stream,
 		wrtc: WRTC,
 	};
 }

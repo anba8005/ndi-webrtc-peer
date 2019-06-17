@@ -9,6 +9,7 @@ const NDIMediaStream_1 = require("./NDIMediaStream");
 const NDIMediaTrack_1 = require("./NDIMediaTrack");
 const WRTC_1 = require("./WRTC");
 const NDIPeerConfiguration_1 = require("./NDIPeerConfiguration");
+const NDI_1 = require("./NDI");
 let localId = null;
 let remoteId = null;
 let peer = null;
@@ -17,6 +18,9 @@ let stream = new NDIMediaStream_1.NDIMediaStream(new NDIMediaTrack_1.NDIMediaTra
 const streamTimeout = 5000;
 const config = NDIPeerConfiguration_1.createDefaultConfiguration();
 config.ndi.name = 'TEST';
+NDI_1.findNDISources().then(sources => {
+    console.log(sources);
+});
 function getTestOptions() {
     return {
         config,
@@ -29,7 +33,7 @@ function getTestOptions() {
         // offerToReceiveAudio: false,
         },
         initiator: true,
-        //stream,
+        stream,
         wrtc: WRTC_1.WRTC,
     };
 }

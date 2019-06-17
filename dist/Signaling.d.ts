@@ -1,11 +1,11 @@
 import { RTCPeerConnection } from './RTCPeerConnection';
 export declare class Signaling {
-    private peer;
+    private peer?;
     private process;
     private reader;
     private lastCorrelation;
     private resolutions;
-    constructor(peer: RTCPeerConnection);
+    constructor(peer?: RTCPeerConnection);
     spawn(): void;
     destroy(): void;
     request<T>(command: string, payload: object): Promise<T>;

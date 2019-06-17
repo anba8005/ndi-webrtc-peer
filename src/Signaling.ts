@@ -32,7 +32,7 @@ export class Signaling {
 	private lastCorrelation: number = 0;
 	private resolutions: Map<number, IResolution> = new Map();
 
-	constructor(private peer: RTCPeerConnection) {}
+	constructor(private peer?: RTCPeerConnection) {}
 
 	public spawn() {
 		this.process = spawn('ndi-webrtc-peer-worker', this.createArguments());
