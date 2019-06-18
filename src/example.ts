@@ -12,7 +12,7 @@ let peer: any = null;
 
 let name = 'ANBA8005-DESKTOP (OBS)';
 let stream = new NDIMediaStream(
-	new NDIMediaTrack(name, true, true, { echoCancelation: false }),
+	new NDIMediaTrack(name, true, true, { echoCancelation: false }, 640, 360),
 );
 const streamTimeout = 5000;
 

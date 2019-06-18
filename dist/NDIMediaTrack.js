@@ -6,12 +6,14 @@ function createUniqueId() {
     return uniqueId;
 }
 class NDIMediaTrack {
-    constructor(name, video = true, audio = true, audioOptions = {}) {
+    constructor(name, video = true, audio = true, audioOptions = {}, width, height) {
         this.id = createUniqueId().toString();
         this.name = name;
         this.video = video;
         this.audio = audio;
         this.audioOptions = audioOptions;
+        this.width = width;
+        this.height = height;
     }
 }
 exports.NDIMediaTrack = NDIMediaTrack;

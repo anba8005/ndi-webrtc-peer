@@ -21,6 +21,8 @@ export class NDIMediaTrack {
 	public video: boolean;
 	public audio: boolean;
 	public audioOptions: AudioOptions;
+	public width?: number;
+	public height?: number;
 
 	public replaceTrack?: (
 		oldTrack: NDIMediaTrack,
@@ -33,11 +35,15 @@ export class NDIMediaTrack {
 		video = true,
 		audio = true,
 		audioOptions: AudioOptions = {},
+		width?: number,
+		height?: number,
 	) {
 		this.id = createUniqueId().toString();
 		this.name = name;
 		this.video = video;
 		this.audio = audio;
 		this.audioOptions = audioOptions;
+		this.width = width;
+		this.height = height;
 	}
 }

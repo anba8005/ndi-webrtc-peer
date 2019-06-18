@@ -13,6 +13,8 @@ export declare class NDIMediaTrack {
     video: boolean;
     audio: boolean;
     audioOptions: AudioOptions;
+    width?: number;
+    height?: number;
     replaceTrack?: (oldTrack: NDIMediaTrack, newTrack: NDIMediaTrack, stream: NDIMediaStream) => Promise<void>;
-    constructor(name: string, video?: boolean, audio?: boolean, audioOptions?: AudioOptions);
+    constructor(name: string, video?: boolean, audio?: boolean, audioOptions?: AudioOptions, width?: number, height?: number);
 }
