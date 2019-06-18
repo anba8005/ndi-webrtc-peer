@@ -7,4 +7,5 @@ import { RTCPeerConnection } from './RTCPeerConnection';
 import { RTCSessionDescription } from './RTCSessionDescription';
 import { WRTC } from './WRTC';
 import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
-export { NDIMediaStream, NDIMediaTrack, NDIPeerConfiguration, RTCDataChannel, RTCIceCandidate, RTCPeerConnection, RTCSessionDescription, RTPSenderInterface, RTPReceiverInterface, WRTC, };
+import { NDISource, findNDISources } from './NDI';
+export { NDIMediaStream, NDIMediaTrack, NDIPeerConfiguration, NDISource, findNDISources, RTCDataChannel, RTCIceCandidate, RTCPeerConnection, RTCSessionDescription, RTPSenderInterface, RTPReceiverInterface, WRTC, };

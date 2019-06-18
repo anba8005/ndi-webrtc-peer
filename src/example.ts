@@ -3,7 +3,7 @@ import IO from 'socket.io-client';
 import { NDIMediaStream } from './NDIMediaStream';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { WRTC } from './WRTC';
-import { createDefaultConfiguration } from './NDIPeerConfiguration';
+import { NDIPeerConfiguration } from './NDIPeerConfiguration';
 import { findNDISources } from './NDI';
 
 let localId: string = null;
@@ -16,8 +16,16 @@ let stream = new NDIMediaStream(
 );
 const streamTimeout = 5000;
 
-const config = createDefaultConfiguration();
-config.ndi.name = 'TEST';
+const config: NDIPeerConfiguration = {
+	ndi: {
+		name: 'TEST',
+		persistent: false,
+	},
+	iceServers: [
+		{ urls: 'stun:stun.l.google.com:19302' },
+		{ urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+	],
+};
 
 findNDISources().then(sources => {
 	console.log(sources);

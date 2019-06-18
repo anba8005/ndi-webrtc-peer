@@ -8,7 +8,6 @@ const socket_io_client_1 = __importDefault(require("socket.io-client"));
 const NDIMediaStream_1 = require("./NDIMediaStream");
 const NDIMediaTrack_1 = require("./NDIMediaTrack");
 const WRTC_1 = require("./WRTC");
-const NDIPeerConfiguration_1 = require("./NDIPeerConfiguration");
 const NDI_1 = require("./NDI");
 let localId = null;
 let remoteId = null;
@@ -16,8 +15,16 @@ let peer = null;
 let name = 'ANBA8005-DESKTOP (OBS)';
 let stream = new NDIMediaStream_1.NDIMediaStream(new NDIMediaTrack_1.NDIMediaTrack(name, true, true, { echoCancelation: false }));
 const streamTimeout = 5000;
-const config = NDIPeerConfiguration_1.createDefaultConfiguration();
-config.ndi.name = 'TEST';
+const config = {
+    ndi: {
+        name: 'TEST',
+        persistent: false,
+    },
+    iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
+    ],
+};
 NDI_1.findNDISources().then(sources => {
     console.log(sources);
 });

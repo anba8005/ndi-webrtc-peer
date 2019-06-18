@@ -8,4 +8,3 @@ export interface NDIPeerConfiguration extends RTCConfiguration {
     };
     cpuAdaptation?: boolean;
 }
-export declare function createDefaultConfiguration(): NDIPeerConfiguration;

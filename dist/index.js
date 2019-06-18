@@ -14,4 +14,6 @@ const RTCSessionDescription_1 = require("./RTCSessionDescription");
 exports.RTCSessionDescription = RTCSessionDescription_1.RTCSessionDescription;
 const WRTC_1 = require("./WRTC");
 exports.WRTC = WRTC_1.WRTC;
+const NDI_1 = require("./NDI");
+exports.findNDISources = NDI_1.findNDISources;
 //# sourceMappingURL=index.js.map
