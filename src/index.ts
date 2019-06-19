@@ -8,7 +8,7 @@ import { RTCSessionDescription } from './RTCSessionDescription';
 import { WRTC } from './WRTC';
 import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
 import { NDISource, findNDISources } from './NDI';
-import { setLogger } from './Logger';
+import { setNDILogger } from './Logger';
 
 export {
 	NDIMediaStream,
@@ -26,5 +26,5 @@ export {
 	RTPReceiverInterface,
 	WRTC,
 	//
-	setLogger,
+	setNDILogger,
 };

@@ -5,7 +5,7 @@ import { Signaling } from './Signaling';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { NDIPeerConfiguration } from './NDIPeerConfiguration';
 import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
-import { logger } from './Logger';
+import { ndiLogger } from './Logger';
 
 const iceConnectionStates = [
 	'new',
@@ -122,13 +122,13 @@ export class RTCPeerConnection {
 		JSON.stringify(track);
 		this.request<void>('addTrack', track)
 			.then(() => {
-				logger.info('Track ' + JSON.stringify(track) + ' added');
+				ndiLogger.info('Track ' + JSON.stringify(track) + ' added');
 			})
 			.catch(e => {
 				if (this.channel) {
 					this.channel._onError(e);
 				} else {
-					logger.error('addTrack:' + e);
+					ndiLogger.error('addTrack:' + e);
 				}
 			});
 		//
@@ -141,13 +141,13 @@ export class RTCPeerConnection {
 			trackId: track.id,
 		})
 			.then(() => {
-				logger.info('Track ' + JSON.stringify(track) + ' removed');
+				ndiLogger.info('Track ' + JSON.stringify(track) + ' removed');
 			})
 			.catch(e => {
 				if (this.channel) {
 					this.channel._onError(e);
 				} else {
-					logger.error('removeTrack:' + e);
+					ndiLogger.error('removeTrack:' + e);
 				}
 			});
 	}
@@ -155,19 +155,19 @@ export class RTCPeerConnection {
 	public replaceTrack(newTrack: NDIMediaTrack) {
 		return this.request<void>('replaceTrack', newTrack)
 			.then(() => {
-				logger.info('Track replaced with ' + JSON.stringify(newTrack));
+				ndiLogger.info('Track replaced with ' + JSON.stringify(newTrack));
 			})
 			.catch(e => {
 				if (this.channel) {
 					this.channel._onError(e);
 				} else {
-					logger.error('replaceTrack:' + e);
+					ndiLogger.error('replaceTrack:' + e);
 				}
 			});
 	}
 
 	public close() {
-		logger.info('Closing PeerConnection');
+		ndiLogger.info('Closing PeerConnection');
 		this.signaling.destroy();
 		this.signaling = null;
 	}

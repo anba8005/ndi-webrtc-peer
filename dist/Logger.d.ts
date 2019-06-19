@@ -4,6 +4,6 @@ interface LoggerInterface {
     warn: (...args: any[]) => void;
     error: (...args: any[]) => void;
 }
-export declare let logger: LoggerInterface;
-export declare const setLogger: (l: LoggerInterface) => void;
+export declare let ndiLogger: LoggerInterface;
+export declare const setNDILogger: (l: LoggerInterface) => void;
 export {};

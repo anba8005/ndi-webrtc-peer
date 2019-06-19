@@ -98,14 +98,14 @@ class RTCPeerConnection {
         JSON.stringify(track);
         this.request('addTrack', track)
             .then(() => {
-            Logger_1.logger.info('Track ' + JSON.stringify(track) + ' added');
+            Logger_1.ndiLogger.info('Track ' + JSON.stringify(track) + ' added');
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                Logger_1.logger.error('addTrack:' + e);
+                Logger_1.ndiLogger.error('addTrack:' + e);
             }
         });
         //
@@ -117,33 +117,33 @@ class RTCPeerConnection {
             trackId: track.id,
         })
             .then(() => {
-            Logger_1.logger.info('Track ' + JSON.stringify(track) + ' removed');
+            Logger_1.ndiLogger.info('Track ' + JSON.stringify(track) + ' removed');
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                Logger_1.logger.error('removeTrack:' + e);
+                Logger_1.ndiLogger.error('removeTrack:' + e);
             }
         });
     }
     replaceTrack(newTrack) {
         return this.request('replaceTrack', newTrack)
             .then(() => {
-            Logger_1.logger.info('Track replaced with ' + JSON.stringify(newTrack));
+            Logger_1.ndiLogger.info('Track replaced with ' + JSON.stringify(newTrack));
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                Logger_1.logger.error('replaceTrack:' + e);
+                Logger_1.ndiLogger.error('replaceTrack:' + e);
             }
         });
     }
     close() {
-        Logger_1.logger.info('Closing PeerConnection');
+        Logger_1.ndiLogger.info('Closing PeerConnection');
         this.signaling.destroy();
         this.signaling = null;
     }

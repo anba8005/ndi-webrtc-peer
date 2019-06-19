@@ -5,25 +5,25 @@ interface LoggerInterface {
 	error: (...args: any[]) => void;
 }
 
-export let logger: LoggerInterface = {
+export let ndiLogger: LoggerInterface = {
 	debug: (...args: any[]) => {
 		if (debugEnabled) {
-			console.log(args);
+			console.log(...args);
 		}
 	},
 	info: (...args: any[]) => {
-		console.log(args);
+		console.log(...args);
 	},
 	warn: (...args: any[]) => {
-		console.log(args);
+		console.log(...args);
 	},
 	error: (...args: any[]) => {
-		console.log(args);
+		console.log(...args);
 	},
 };
 
-export const setLogger = (l: LoggerInterface) => {
-	logger = l;
+export const setNDILogger = (l: LoggerInterface) => {
+	ndiLogger = l;
 };
 
 const debugEnabled = false;
