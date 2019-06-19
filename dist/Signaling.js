@@ -1,8 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = require("child_process");
 const readline_1 = require("readline");
 const Logger_1 = require("./Logger");
+const os_1 = __importDefault(require("os"));
 class Signaling {
     constructor(peer) {
         this.peer = peer;
@@ -27,7 +31,7 @@ class Signaling {
     }
     destroy() {
         this.reader.close();
-        this.writeLine('STOP\n');
+        this.writeLine('STOP');
     }
     request(command, payload) {
         const promise = new Promise((resolve, reject) => {
@@ -35,7 +39,7 @@ class Signaling {
             const correlation = this.lastCorrelation;
             //
             const json = { command, payload, correlation };
-            this.writeLine(JSON.stringify(json) + '\n');
+            this.writeLine(JSON.stringify(json));
             //
             const resolution = { reject, resolve };
             this.resolutions.set(correlation, resolution);
@@ -144,7 +148,7 @@ class Signaling {
     }
     writeLine(line) {
         Logger_1.ndiLogger.debug('->' + line);
-        this.process.stdin.write(line);
+        this.process.stdin.write(line + os_1.default.EOL);
     }
 }
 exports.Signaling = Signaling;

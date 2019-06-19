@@ -2,6 +2,7 @@ import { ChildProcess, spawn } from 'child_process';
 import { createInterface, ReadLine } from 'readline';
 import { RTCPeerConnection } from './RTCPeerConnection';
 import { ndiLogger } from './Logger';
+import os from 'os';
 
 interface IRequest {
 	command: string;
@@ -53,7 +54,7 @@ export class Signaling {
 
 	public destroy() {
 		this.reader.close();
-		this.writeLine('STOP\n');
+		this.writeLine('STOP');
 	}
 
 	public request<T>(command: string, payload: object): Promise<T> {
@@ -62,7 +63,7 @@ export class Signaling {
 			const correlation = this.lastCorrelation;
 			//
 			const json: IRequest = { command, payload, correlation };
-			this.writeLine(JSON.stringify(json) + '\n');
+			this.writeLine(JSON.stringify(json));
 			//
 			const resolution: IResolution = { reject, resolve };
 			this.resolutions.set(correlation, resolution);
@@ -177,6 +178,6 @@ export class Signaling {
 
 	private writeLine(line: string) {
 		ndiLogger.debug('->' + line);
-		this.process.stdin.write(line);
+		this.process.stdin.write(line + os.EOL);
 	}
 }
