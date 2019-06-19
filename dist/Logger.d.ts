@@ -1,2 +1,3 @@
-export declare let logger: (s: any) => void;
-export declare const setLogger: (l: (s: any) => void) => void;
+import { Logger } from 'winston';
+export declare function setLogger(l: Logger): void;
+export declare function getLogger(): Logger;

@@ -16,5 +16,4 @@ export declare class Signaling {
     private onProcessStdErr;
     private onProcessExit;
     private writeLine;
-    private log;
 }

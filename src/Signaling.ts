@@ -1,7 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
 import { createInterface, ReadLine } from 'readline';
 import { RTCPeerConnection } from './RTCPeerConnection';
-import { logger } from './Logger';
+import { getLogger } from './Logger';
 
 interface IRequest {
 	command: string;
@@ -75,7 +75,7 @@ export class Signaling {
 	//
 
 	private onProcessLine(line: string) {
-		// this.log("<-" + line);
+		getLogger().debug('<-' + line);
 		try {
 			const json = JSON.parse(line);
 			if (!!json.correlation) {
@@ -84,7 +84,7 @@ export class Signaling {
 				this.processState(json);
 			}
 		} catch (e) {
-			this.log(e);
+			getLogger().error('onProcessLine:' + e);
 		}
 	}
 
@@ -98,8 +98,10 @@ export class Signaling {
 				resolution.reject(reply.error);
 			}
 		} else {
-			this.log(
-				'Resolution for correlation ' + reply.correlation + ' not found',
+			getLogger().error(
+				'processReply:Resolution id for correlation ' +
+					reply.correlation +
+					' not found',
 			);
 		}
 	}
@@ -150,7 +152,7 @@ export class Signaling {
 			case 'OnRemoveTrack':
 				break;
 			default:
-				this.log('Invalid state' + state.payload);
+				getLogger().error('processState:Invalid state' + state.payload);
 		}
 	}
 
@@ -159,21 +161,22 @@ export class Signaling {
 	}
 
 	private onProcessStdErr(data: string) {
-		this.log(data);
+		const lines = data.split(/\r\n|\r|\n/);
+		lines.forEach(line => {
+			if (line.length > 0) {
+				getLogger().info('- ' + line);
+			}
+		});
 	}
 
 	private onProcessExit(code: number, signal: string) {
 		for (const value of this.resolutions.values()) {
-			value.reject('signaling closed');
+			value.reject('onProcessExit:signaling closed');
 		}
 	}
 
 	private writeLine(line: string) {
-		// this.log("->" + line);
+		getLogger().debug('->' + line);
 		this.process.stdin.write(line);
-	}
-
-	private log(error: string) {
-		logger(error);
 	}
 }

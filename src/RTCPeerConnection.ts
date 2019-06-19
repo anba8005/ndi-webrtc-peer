@@ -5,7 +5,7 @@ import { Signaling } from './Signaling';
 import { NDIMediaTrack } from './NDIMediaTrack';
 import { NDIPeerConfiguration } from './NDIPeerConfiguration';
 import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
-import { logger } from './Logger';
+import { getLogger } from './Logger';
 
 const iceConnectionStates = [
 	'new',
@@ -122,13 +122,13 @@ export class RTCPeerConnection {
 		JSON.stringify(track);
 		this.request<void>('addTrack', track)
 			.then(() => {
-				this.log('Track ' + JSON.stringify(track) + ' added');
+				getLogger().info('Track ' + JSON.stringify(track) + ' added');
 			})
 			.catch(e => {
 				if (this.channel) {
 					this.channel._onError(e);
 				} else {
-					this.log(e);
+					getLogger().error('addTrack:' + e);
 				}
 			});
 		//
@@ -141,13 +141,13 @@ export class RTCPeerConnection {
 			trackId: track.id,
 		})
 			.then(() => {
-				this.log('Track ' + JSON.stringify(track) + ' removed');
+				getLogger().info('Track ' + JSON.stringify(track) + ' removed');
 			})
 			.catch(e => {
 				if (this.channel) {
 					this.channel._onError(e);
 				} else {
-					this.log(e);
+					getLogger().error('removeTrack:' + e);
 				}
 			});
 	}
@@ -155,19 +155,19 @@ export class RTCPeerConnection {
 	public replaceTrack(newTrack: NDIMediaTrack) {
 		return this.request<void>('replaceTrack', newTrack)
 			.then(() => {
-				this.log('Track replaced with ' + JSON.stringify(newTrack));
+				getLogger().info('Track replaced with ' + JSON.stringify(newTrack));
 			})
 			.catch(e => {
 				if (this.channel) {
 					this.channel._onError(e);
 				} else {
-					this.log(e);
+					getLogger().error('replaceTrack:' + e);
 				}
 			});
 	}
 
 	public close() {
-		this.log('close');
+		getLogger().info('Closing PeerConnection');
 		this.signaling.destroy();
 		this.signaling = null;
 	}
@@ -218,9 +218,5 @@ export class RTCPeerConnection {
 
 	private createNativePeer() {
 		return this.signaling.request<void>('createPeer', this.configuration);
-	}
-
-	private log(s: any) {
-		logger(s);
 	}
 }

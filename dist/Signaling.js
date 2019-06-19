@@ -46,7 +46,7 @@ class Signaling {
     //
     //
     onProcessLine(line) {
-        // this.log("<-" + line);
+        Logger_1.getLogger().debug('<-' + line);
         try {
             const json = JSON.parse(line);
             if (!!json.correlation) {
@@ -57,7 +57,7 @@ class Signaling {
             }
         }
         catch (e) {
-            this.log(e);
+            Logger_1.getLogger().error('onProcessLine:' + e);
         }
     }
     processReply(reply) {
@@ -72,7 +72,9 @@ class Signaling {
             }
         }
         else {
-            this.log('Resolution for correlation ' + reply.correlation + ' not found');
+            Logger_1.getLogger().error('processReply:Resolution id for correlation ' +
+                reply.correlation +
+                ' not found');
         }
     }
     processState(state) {
@@ -121,26 +123,28 @@ class Signaling {
             case 'OnRemoveTrack':
                 break;
             default:
-                this.log('Invalid state' + state.payload);
+                Logger_1.getLogger().error('processState:Invalid state' + state.payload);
         }
     }
     createArguments() {
         return [];
     }
     onProcessStdErr(data) {
-        this.log(data);
+        const lines = data.split(/\r\n|\r|\n/);
+        lines.forEach(line => {
+            if (line.length > 0) {
+                Logger_1.getLogger().info('- ' + line);
+            }
+        });
     }
     onProcessExit(code, signal) {
         for (const value of this.resolutions.values()) {
-            value.reject('signaling closed');
+            value.reject('onProcessExit:signaling closed');
         }
     }
     writeLine(line) {
-        // this.log("->" + line);
+        Logger_1.getLogger().debug('->' + line);
         this.process.stdin.write(line);
-    }
-    log(error) {
-        Logger_1.logger(error);
     }
 }
 exports.Signaling = Signaling;

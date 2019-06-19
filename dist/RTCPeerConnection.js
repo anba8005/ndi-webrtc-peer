@@ -98,14 +98,14 @@ class RTCPeerConnection {
         JSON.stringify(track);
         this.request('addTrack', track)
             .then(() => {
-            this.log('Track ' + JSON.stringify(track) + ' added');
+            Logger_1.getLogger().info('Track ' + JSON.stringify(track) + ' added');
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                this.log(e);
+                Logger_1.getLogger().error('addTrack:' + e);
             }
         });
         //
@@ -117,33 +117,33 @@ class RTCPeerConnection {
             trackId: track.id,
         })
             .then(() => {
-            this.log('Track ' + JSON.stringify(track) + ' removed');
+            Logger_1.getLogger().info('Track ' + JSON.stringify(track) + ' removed');
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                this.log(e);
+                Logger_1.getLogger().error('removeTrack:' + e);
             }
         });
     }
     replaceTrack(newTrack) {
         return this.request('replaceTrack', newTrack)
             .then(() => {
-            this.log('Track replaced with ' + JSON.stringify(newTrack));
+            Logger_1.getLogger().info('Track replaced with ' + JSON.stringify(newTrack));
         })
             .catch(e => {
             if (this.channel) {
                 this.channel._onError(e);
             }
             else {
-                this.log(e);
+                Logger_1.getLogger().error('replaceTrack:' + e);
             }
         });
     }
     close() {
-        this.log('close');
+        Logger_1.getLogger().info('Closing PeerConnection');
         this.signaling.destroy();
         this.signaling = null;
     }
@@ -183,9 +183,6 @@ class RTCPeerConnection {
     }
     createNativePeer() {
         return this.signaling.request('createPeer', this.configuration);
-    }
-    log(s) {
-        Logger_1.logger(s);
     }
 }
 exports.RTCPeerConnection = RTCPeerConnection;
