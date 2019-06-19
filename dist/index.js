@@ -16,4 +16,6 @@ const WRTC_1 = require("./WRTC");
 exports.WRTC = WRTC_1.WRTC;
 const NDI_1 = require("./NDI");
 exports.findNDISources = NDI_1.findNDISources;
+const Logger_1 = require("./Logger");
+exports.setLogger = Logger_1.setLogger;
 //# sourceMappingURL=index.js.map
