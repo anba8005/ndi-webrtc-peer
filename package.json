@@ -11,12 +11,11 @@
 		"start": "ts-node -r tsconfig-paths/register src/example.ts",
 		"start:dev": "nodemon"
 	},
-	"dependencies": {
-		"@types/winston": "^2.4.4"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/simple-peer": "^6.1.5",
 		"@types/socket.io-client": "^1.4.32",
+		"@types/winston": "^2.4.4",
 		"nodemon": "^1.18.3",
 		"prettier": "^1.18.2",
 		"simple-peer": "^9.2.1",
