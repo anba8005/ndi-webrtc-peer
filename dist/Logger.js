@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const winston_1 = require("winston");
-let logger;
-function initLogger() {
-    logger = winston_1.createLogger({
-        level: 'info',
-        format: winston_1.format.combine(winston_1.format.colorize(), winston_1.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston_1.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)),
-        transports: [new winston_1.transports.Console()],
-    });
-}
-function setLogger(l) {
-    logger = l;
-}
-exports.setLogger = setLogger;
-function getLogger() {
-    if (!logger) {
-        initLogger();
-    }
-    return logger;
-}
-exports.getLogger = getLogger;
+exports.logger = {
+    debug: (...args) => {
+        if (debugEnabled) {
+            console.log(args);
+        }
+    },
+    info: (...args) => {
+        console.log(args);
+    },
+    warn: (...args) => {
+        console.log(args);
+    },
+    error: (...args) => {
+        console.log(args);
+    },
+};
+exports.setLogger = (l) => {
+    exports.logger = l;
+};
+const debugEnabled = false;
 //# sourceMappingURL=Logger.js.map

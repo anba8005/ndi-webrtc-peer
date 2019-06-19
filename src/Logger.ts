@@ -1,26 +1,29 @@
-import { createLogger, format, transports, Logger } from 'winston';
-
-let logger: Logger;
-
-function initLogger() {
-	logger = createLogger({
-		level: 'info',
-		format: format.combine(
-			format.colorize(),
-			format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-			format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
-		),
-		transports: [new transports.Console()],
-	});
+interface LoggerInterface {
+	debug: (...args: any[]) => void;
+	info: (...args: any[]) => void;
+	warn: (...args: any[]) => void;
+	error: (...args: any[]) => void;
 }
 
-export function setLogger(l: Logger) {
+export let logger: LoggerInterface = {
+	debug: (...args: any[]) => {
+		if (debugEnabled) {
+			console.log(args);
+		}
+	},
+	info: (...args: any[]) => {
+		console.log(args);
+	},
+	warn: (...args: any[]) => {
+		console.log(args);
+	},
+	error: (...args: any[]) => {
+		console.log(args);
+	},
+};
+
+export const setLogger = (l: LoggerInterface) => {
 	logger = l;
-}
+};
 
-export function getLogger() {
-	if (!logger) {
-		initLogger();
-	}
-	return logger;
-}
+const debugEnabled = false;

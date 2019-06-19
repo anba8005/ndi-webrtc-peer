@@ -46,7 +46,7 @@ class Signaling {
     //
     //
     onProcessLine(line) {
-        Logger_1.getLogger().debug('<-' + line);
+        Logger_1.logger.debug('<-' + line);
         try {
             const json = JSON.parse(line);
             if (!!json.correlation) {
@@ -57,7 +57,7 @@ class Signaling {
             }
         }
         catch (e) {
-            Logger_1.getLogger().error('onProcessLine:' + e);
+            Logger_1.logger.error('onProcessLine:' + e);
         }
     }
     processReply(reply) {
@@ -72,7 +72,7 @@ class Signaling {
             }
         }
         else {
-            Logger_1.getLogger().error('processReply:Resolution id for correlation ' +
+            Logger_1.logger.error('processReply:Resolution id for correlation ' +
                 reply.correlation +
                 ' not found');
         }
@@ -123,7 +123,7 @@ class Signaling {
             case 'OnRemoveTrack':
                 break;
             default:
-                Logger_1.getLogger().error('processState:Invalid state' + state.payload);
+                Logger_1.logger.error('processState:Invalid state' + state.payload);
         }
     }
     createArguments() {
@@ -133,7 +133,7 @@ class Signaling {
         const lines = data.split(/\r\n|\r|\n/);
         lines.forEach(line => {
             if (line.length > 0) {
-                Logger_1.getLogger().info('- ' + line);
+                Logger_1.logger.info('- ' + line);
             }
         });
     }
@@ -143,7 +143,7 @@ class Signaling {
         }
     }
     writeLine(line) {
-        Logger_1.getLogger().debug('->' + line);
+        Logger_1.logger.debug('->' + line);
         this.process.stdin.write(line);
     }
 }
