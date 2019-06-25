@@ -1,8 +1,11 @@
 import { Signaling } from './Signaling';
 import path from 'path';
 import fs from 'fs';
+import util from 'util';
 
 const tempDirectory = require('temp-dir');
+
+const chmod = util.promisify(fs.chmod);
 
 export interface NDISource {
 	name: string;
@@ -32,7 +35,7 @@ export async function initializeNativeCode() {
 	//
 	await copyFile(srcName, dstName);
 	//
-	fs.chmodSync(dstName, 755);
+	await chmod(dstName, 755);
 	//
 	return true;
 }

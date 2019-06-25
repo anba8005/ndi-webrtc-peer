@@ -14,7 +14,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Signaling_1 = require("./Signaling");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const util_1 = __importDefault(require("util"));
 const tempDirectory = require('temp-dir');
+const chmod = util_1.default.promisify(fs_1.default.chmod);
 function findNDISources() {
     return __awaiter(this, void 0, void 0, function* () {
         const signaling = new Signaling_1.Signaling();
@@ -43,7 +45,7 @@ function initializeNativeCode() {
         //
         yield copyFile(srcName, dstName);
         //
-        fs_1.default.chmodSync(dstName, 755);
+        yield chmod(dstName, 755);
         //
         return true;
     });
