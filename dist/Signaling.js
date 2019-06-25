@@ -15,8 +15,7 @@ class Signaling {
         this.resolutions = new Map();
     }
     spawn() {
-        const workerName = path_1.default.join(__dirname, '../native/ndi-webrtc-peer-worker');
-        Logger_1.ndiLogger.info(workerName);
+        const workerName = path_1.default.join(path_1.default.dirname(require.main.filename), '../native/ndi-webrtc-peer-worker');
         this.process = child_process_1.spawn(workerName, this.createArguments());
         this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
         //

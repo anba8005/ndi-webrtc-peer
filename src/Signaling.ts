@@ -37,8 +37,10 @@ export class Signaling {
 	constructor(private peer?: RTCPeerConnection) {}
 
 	public spawn() {
-		const workerName = path.join(__dirname, '../native/ndi-webrtc-peer-worker');
-		ndiLogger.info(workerName);
+		const workerName = path.join(
+			path.dirname(require.main.filename),
+			'../native/ndi-webrtc-peer-worker',
+		);
 		this.process = spawn(workerName, this.createArguments());
 		this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
 		//
