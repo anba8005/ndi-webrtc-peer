@@ -7,7 +7,7 @@ const child_process_1 = require("child_process");
 const readline_1 = require("readline");
 const Logger_1 = require("./Logger");
 const os_1 = __importDefault(require("os"));
-const path_1 = __importDefault(require("path"));
+const NDI_1 = require("./NDI");
 class Signaling {
     constructor(peer) {
         this.peer = peer;
@@ -15,7 +15,10 @@ class Signaling {
         this.resolutions = new Map();
     }
     spawn() {
-        const workerName = path_1.default.join(path_1.default.dirname(require.main.filename), '../native/ndi-webrtc-peer-worker');
+        const workerName = NDI_1.isNativeCodePackaged()
+            ? NDI_1.getTmpWorkerName()
+            : NDI_1.getPackagedWorkerName();
+        Logger_1.ndiLogger.info('Starting %s', workerName);
         this.process = child_process_1.spawn(workerName, this.createArguments());
         this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
         //

@@ -7,6 +7,6 @@ import { RTCPeerConnection } from './RTCPeerConnection';
 import { RTCSessionDescription } from './RTCSessionDescription';
 import { WRTC } from './WRTC';
 import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
-import { NDISource, findNDISources } from './NDI';
+import { NDISource, findNDISources, initializeNativeCode, isNativeCodePackaged, getPackagedWorkerName, getTmpWorkerName } from './NDI';
 import { setNDILogger } from './Logger';
-export { NDIMediaStream, NDIMediaTrack, NDIPeerConfiguration, NDISource, findNDISources, RTCDataChannel, RTCIceCandidate, RTCPeerConnection, RTCSessionDescription, RTPSenderInterface, RTPReceiverInterface, WRTC, setNDILogger, };
+export { NDIMediaStream, NDIMediaTrack, NDIPeerConfiguration, NDISource, findNDISources, RTCDataChannel, RTCIceCandidate, RTCPeerConnection, RTCSessionDescription, RTPSenderInterface, RTPReceiverInterface, WRTC, setNDILogger, initializeNativeCode, isNativeCodePackaged, getPackagedWorkerName, getTmpWorkerName, };

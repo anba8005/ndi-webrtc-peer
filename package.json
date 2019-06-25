@@ -11,7 +11,9 @@
 		"start": "ts-node -r tsconfig-paths/register src/example.ts",
 		"start:dev": "nodemon"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"temp-dir": "^2.0.0"
+	},
 	"devDependencies": {
 		"@types/simple-peer": "^6.1.5",
 		"@types/socket.io-client": "^1.4.32",

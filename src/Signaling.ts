@@ -3,7 +3,11 @@ import { createInterface, ReadLine } from 'readline';
 import { RTCPeerConnection } from './RTCPeerConnection';
 import { ndiLogger } from './Logger';
 import os from 'os';
-import path from 'path';
+import {
+	isNativeCodePackaged,
+	getPackagedWorkerName,
+	getTmpWorkerName,
+} from './NDI';
 
 interface IRequest {
 	command: string;
@@ -37,10 +41,10 @@ export class Signaling {
 	constructor(private peer?: RTCPeerConnection) {}
 
 	public spawn() {
-		const workerName = path.join(
-			path.dirname(require.main.filename),
-			'../native/ndi-webrtc-peer-worker',
-		);
+		const workerName = isNativeCodePackaged()
+			? getTmpWorkerName()
+			: getPackagedWorkerName();
+		ndiLogger.info('Starting %s', workerName);
 		this.process = spawn(workerName, this.createArguments());
 		this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
 		//
