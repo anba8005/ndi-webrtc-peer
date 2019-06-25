@@ -3,6 +3,7 @@ import { createInterface, ReadLine } from 'readline';
 import { RTCPeerConnection } from './RTCPeerConnection';
 import { ndiLogger } from './Logger';
 import os from 'os';
+import path from 'path';
 
 interface IRequest {
 	command: string;
@@ -36,7 +37,9 @@ export class Signaling {
 	constructor(private peer?: RTCPeerConnection) {}
 
 	public spawn() {
-		this.process = spawn('ndi-webrtc-peer-worker', this.createArguments());
+		const workerName = path.join(__dirname, '../native/ndi-webrtc-peer-worker');
+		ndiLogger.info(workerName);
+		this.process = spawn(workerName, this.createArguments());
 		this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
 		//
 		this.process.stderr.setEncoding('utf-8');
