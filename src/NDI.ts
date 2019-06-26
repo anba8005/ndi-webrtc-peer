@@ -10,23 +10,44 @@ const chmod = util.promisify(fs.chmod);
 
 const win32 = os.platform() === 'win32';
 
+//
+//
+//
+
+let signaling: Signaling;
+
 export interface NDISource {
 	name: string;
 	ip: string;
 }
 
 export async function findNDISources() {
-	const signaling = new Signaling();
-	signaling.spawn();
+	if (!signaling) {
+		signaling = new Signaling();
+		signaling.spawn();
+	}
+	//
 	try {
 		const sources = await signaling.request<NDISource[]>('findNDISources', {});
 		return sources;
 	} catch (e) {
+		shutdownNDISourcesFinder();
 		throw e;
-	} finally {
-		signaling.destroy();
 	}
 }
+
+export function shutdownNDISourcesFinder() {
+	if (signaling) {
+		try {
+			signaling.destroy();
+			signaling = undefined;
+		} catch (err) {}
+	}
+}
+
+//
+//
+//
 
 export async function initializeNativeCode() {
 	if (!isNativeCodePackaged()) {

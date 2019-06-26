@@ -3,6 +3,7 @@ export interface NDISource {
     ip: string;
 }
 export declare function findNDISources(): Promise<NDISource[]>;
+export declare function shutdownNDISourcesFinder(): void;
 export declare function initializeNativeCode(): Promise<boolean>;
 export declare function isNativeCodePackaged(): boolean;
 export declare function getPackagedWorkerName(): string;

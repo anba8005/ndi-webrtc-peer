@@ -19,23 +19,41 @@ const os_1 = __importDefault(require("os"));
 const tempDirectory = require('temp-dir');
 const chmod = util_1.default.promisify(fs_1.default.chmod);
 const win32 = os_1.default.platform() === 'win32';
+//
+//
+//
+let signaling;
 function findNDISources() {
     return __awaiter(this, void 0, void 0, function* () {
-        const signaling = new Signaling_1.Signaling();
-        signaling.spawn();
+        if (!signaling) {
+            signaling = new Signaling_1.Signaling();
+            signaling.spawn();
+        }
+        //
         try {
             const sources = yield signaling.request('findNDISources', {});
             return sources;
         }
         catch (e) {
+            shutdownNDISourcesFinder();
             throw e;
-        }
-        finally {
-            signaling.destroy();
         }
     });
 }
 exports.findNDISources = findNDISources;
+function shutdownNDISourcesFinder() {
+    if (signaling) {
+        try {
+            signaling.destroy();
+            signaling = undefined;
+        }
+        catch (err) { }
+    }
+}
+exports.shutdownNDISourcesFinder = shutdownNDISourcesFinder;
+//
+//
+//
 function initializeNativeCode() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!isNativeCodePackaged()) {

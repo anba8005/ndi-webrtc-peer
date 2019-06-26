@@ -31,6 +31,10 @@ findNDISources().then(sources => {
 	console.log(sources);
 });
 
+findNDISources().then(sources => {
+	console.log(sources);
+});
+
 function getTestOptions(): any {
 	return {
 		config,

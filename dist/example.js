@@ -28,6 +28,9 @@ const config = {
 NDI_1.findNDISources().then(sources => {
     console.log(sources);
 });
+NDI_1.findNDISources().then(sources => {
+    console.log(sources);
+});
 function getTestOptions() {
     return {
         config,
