@@ -15,8 +15,10 @@ const Signaling_1 = require("./Signaling");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const util_1 = __importDefault(require("util"));
+const os_1 = __importDefault(require("os"));
 const tempDirectory = require('temp-dir');
 const chmod = util_1.default.promisify(fs_1.default.chmod);
+const win32 = os_1.default.platform() === 'win32';
 function findNDISources() {
     return __awaiter(this, void 0, void 0, function* () {
         const signaling = new Signaling_1.Signaling();
@@ -45,7 +47,18 @@ function initializeNativeCode() {
         //
         yield copyFile(srcName, dstName);
         //
-        yield chmod(dstName, 755);
+        if (win32) {
+            // copy aux files
+            const srcPath = getPackagedWorkerPath();
+            const dstPath = getTmpWorkerPath();
+            yield copyFile(srcPath + 'avutil-56.dll', dstPath + 'avutil-56.dll');
+            yield copyFile(srcPath + 'swscale-5.dll', dstPath + 'swscale-5.dll');
+        }
+        //
+        if (!win32) {
+            // chmod +x binary
+            yield chmod(dstName, 755);
+        }
         //
         return true;
     });
@@ -53,7 +66,13 @@ function initializeNativeCode() {
 exports.initializeNativeCode = initializeNativeCode;
 function isNativeCodePackaged() {
     // detect if run via pkg (nodejs packager)
-    return path_1.default.dirname(require.main.filename).startsWith('/snapshot/');
+    const dir = path_1.default.dirname(require.main.filename);
+    if (win32) {
+        return dir.indexOf(':\\snapshot\\') > -1;
+    }
+    else {
+        return dir.startsWith('/snapshot/');
+    }
 }
 exports.isNativeCodePackaged = isNativeCodePackaged;
 function copyFile(source, target) {
@@ -67,11 +86,20 @@ function copyFile(source, target) {
     });
 }
 function getPackagedWorkerName() {
-    return path_1.default.join(path_1.default.dirname(require.main.filename), '../native/ndi-webrtc-peer-worker');
+    return getPackagedWorkerPath() + getExecutableName();
 }
 exports.getPackagedWorkerName = getPackagedWorkerName;
 function getTmpWorkerName() {
-    return tempDirectory + path_1.default.sep + 'ndi-webrtc-peer-worker';
+    return getTmpWorkerPath() + getExecutableName();
 }
 exports.getTmpWorkerName = getTmpWorkerName;
+function getExecutableName() {
+    return 'ndi-webrtc-peer-worker' + (win32 ? '.exe' : '');
+}
+function getPackagedWorkerPath() {
+    return path_1.default.join(path_1.default.dirname(require.main.filename), '..' + path_1.default.sep + 'native' + path_1.default.sep);
+}
+function getTmpWorkerPath() {
+    return tempDirectory + path_1.default.sep;
+}
 //# sourceMappingURL=NDI.js.map

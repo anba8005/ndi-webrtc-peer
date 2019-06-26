@@ -2,10 +2,13 @@ import { Signaling } from './Signaling';
 import path from 'path';
 import fs from 'fs';
 import util from 'util';
+import os from 'os';
 
 const tempDirectory = require('temp-dir');
 
 const chmod = util.promisify(fs.chmod);
+
+const win32 = os.platform() === 'win32';
 
 export interface NDISource {
 	name: string;
@@ -35,14 +38,30 @@ export async function initializeNativeCode() {
 	//
 	await copyFile(srcName, dstName);
 	//
-	await chmod(dstName, 755);
+	if (win32) {
+		// copy aux files
+		const srcPath = getPackagedWorkerPath();
+		const dstPath = getTmpWorkerPath();
+		await copyFile(srcPath + 'avutil-56.dll', dstPath + 'avutil-56.dll');
+		await copyFile(srcPath + 'swscale-5.dll', dstPath + 'swscale-5.dll');
+	}
+	//
+	if (!win32) {
+		// chmod +x binary
+		await chmod(dstName, 755);
+	}
 	//
 	return true;
 }
 
 export function isNativeCodePackaged() {
 	// detect if run via pkg (nodejs packager)
-	return path.dirname(require.main.filename).startsWith('/snapshot/');
+	const dir = path.dirname(require.main.filename);
+	if (win32) {
+		return dir.indexOf(':\\snapshot\\') > -1;
+	} else {
+		return dir.startsWith('/snapshot/');
+	}
 }
 
 function copyFile(source: string, target: string) {
@@ -57,12 +76,24 @@ function copyFile(source: string, target: string) {
 }
 
 export function getPackagedWorkerName() {
-	return path.join(
-		path.dirname(require.main.filename),
-		'../native/ndi-webrtc-peer-worker',
-	);
+	return getPackagedWorkerPath() + getExecutableName();
 }
 
 export function getTmpWorkerName() {
-	return tempDirectory + path.sep + 'ndi-webrtc-peer-worker';
+	return getTmpWorkerPath() + getExecutableName();
+}
+
+function getExecutableName() {
+	return 'ndi-webrtc-peer-worker' + (win32 ? '.exe' : '');
+}
+
+function getPackagedWorkerPath() {
+	return path.join(
+		path.dirname(require.main.filename),
+		'..' + path.sep + 'native' + path.sep,
+	);
+}
+
+function getTmpWorkerPath() {
+	return tempDirectory + path.sep;
 }
