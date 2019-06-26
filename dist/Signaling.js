@@ -147,6 +147,7 @@ class Signaling {
         });
     }
     onProcessExit(code, signal) {
+        Logger_1.ndiLogger.info('process exited %d %s', code, signal);
         for (const value of this.resolutions.values()) {
             value.reject('onProcessExit:signaling closed');
         }

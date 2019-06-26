@@ -40,7 +40,7 @@ function getTestOptions() {
         // offerToReceiveAudio: false,
         },
         initiator: true,
-        stream,
+        // stream,
         wrtc: WRTC_1.WRTC,
     };
 }

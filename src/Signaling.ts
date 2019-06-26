@@ -180,6 +180,7 @@ export class Signaling {
 	}
 
 	private onProcessExit(code: number, signal: string) {
+		ndiLogger.info('process exited %d %s', code, signal);
 		for (const value of this.resolutions.values()) {
 			value.reject('onProcessExit:signaling closed');
 		}
