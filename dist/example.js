@@ -13,9 +13,7 @@ let localId = null;
 let remoteId = null;
 let peer = null;
 let name = 'ANBA8005-DESKTOP (OBS)';
-let stream = new NDIMediaStream_1.NDIMediaStream(new NDIMediaTrack_1.NDIMediaTrack(name, true, { width: 640, height: 360 }, true, {
-    echoCancellation: false,
-}));
+let stream = new NDIMediaStream_1.NDIMediaStream(new NDIMediaTrack_1.NDIMediaTrack(name, true, true, { echoCancellation: false }, true, 640, 480));
 const streamTimeout = 5000;
 const config = {
     ndi: {
