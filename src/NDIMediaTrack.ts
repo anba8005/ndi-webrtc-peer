@@ -10,19 +10,24 @@ export interface AudioOptions {
 	autoGainControl?: boolean;
 	noiseSuppression?: boolean;
 	highPassFilter?: boolean;
-	echoCancelation?: boolean;
+	echoCancellation?: boolean;
 	typingDetection?: boolean;
 	residualEchoDetector?: boolean;
+}
+
+export interface VideoOptions {
+	width?: number;
+	height?: number;
+	lowBandwidth?: boolean;
 }
 
 export class NDIMediaTrack {
 	public id: string;
 	public name: string;
 	public video: boolean;
+	public videoOptions: VideoOptions;
 	public audio: boolean;
 	public audioOptions: AudioOptions;
-	public width?: number;
-	public height?: number;
 
 	public replaceTrack?: (
 		oldTrack: NDIMediaTrack,
@@ -33,17 +38,15 @@ export class NDIMediaTrack {
 	constructor(
 		name: string,
 		video = true,
+		videoOptions: VideoOptions = {},
 		audio = true,
 		audioOptions: AudioOptions = {},
-		width?: number,
-		height?: number,
 	) {
 		this.id = createUniqueId().toString();
 		this.name = name;
 		this.video = video;
+		this.videoOptions = videoOptions;
 		this.audio = audio;
 		this.audioOptions = audioOptions;
-		this.width = width;
-		this.height = height;
 	}
 }
