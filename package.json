@@ -12,9 +12,11 @@
 		"start:dev": "nodemon"
 	},
 	"dependencies": {
+		"fluent-ffmpeg": "^2.1.2",
 		"temp-dir": "^2.0.0"
 	},
 	"devDependencies": {
+		"@types/fluent-ffmpeg": "^2.1.10",
 		"@types/simple-peer": "^6.1.5",
 		"@types/socket.io-client": "^1.4.32",
 		"nodemon": "^1.18.3",

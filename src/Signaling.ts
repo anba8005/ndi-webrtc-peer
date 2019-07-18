@@ -155,11 +155,10 @@ export class Signaling {
 				break;
 			}
 			case 'OnAddTrack':
-				if (this.peer.ontrack) {
-					this.peer.ontrack(state.payload);
-				}
+				this.peer._onAddTrack(state.payload);
 				break;
 			case 'OnRemoveTrack':
+				this.peer._onRemoveTrack(state.payload);
 				break;
 			default:
 				ndiLogger.error('processState:Invalid state' + state.payload);

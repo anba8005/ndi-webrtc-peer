@@ -29,19 +29,23 @@ const config: NDIPeerConfiguration = {
 		name: 'TEST',
 		persistent: false,
 	},
+	preview: {
+		videoUrl: 'rtp://127.0.0.1:50505',
+		audioUrl: 'rtp://127.0.0.1:50510',
+	},
 	iceServers: [
 		{ urls: 'stun:stun.l.google.com:19302' },
 		{ urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
 	],
 };
 
-findNDISources().then(sources => {
-	console.log(sources);
-});
+// findNDISources().then(sources => {
+// 	console.log(sources);
+// });
 
-findNDISources().then(sources => {
-	console.log(sources);
-});
+// findNDISources().then(sources => {
+// 	console.log(sources);
+// });
 
 function getTestOptions(): any {
 	return {
@@ -111,26 +115,26 @@ function bridged() {
 	});
 	peer.on('connect', (s: any) => {
 		console.log('++++++++++++++++++++++++++=CONNECTED');
-		setTimeout(() => {
-			const test = {
-				test: 'HELLO',
-			};
-			const p = peer as any;
-			p.send(JSON.stringify(test));
-			// removeStream();
-			// replaceTrack();
-			// peer._pc.getSenders().then((s: any) => console.log(s));
-			// peer._pc.getReceivers().then((s: any) => console.log(s));
-			peer._pc.getStatsOld(
-				(stats: any) => {
-					console.log(stats);
-				},
-				(err: any) => {
-					console.log('err');
-					console.log(err);
-				},
-			);
-		}, 2000);
+		// setTimeout(() => {
+		// 	const test = {
+		// 		test: 'HELLO',
+		// 	};
+		// 	const p = peer as any;
+		// 	p.send(JSON.stringify(test));
+		// 	// removeStream();
+		// 	// replaceTrack();
+		// 	// peer._pc.getSenders().then((s: any) => console.log(s));
+		// 	// peer._pc.getReceivers().then((s: any) => console.log(s));
+		// 	peer._pc.getStatsOld(
+		// 		(stats: any) => {
+		// 			console.log(stats);
+		// 		},
+		// 		(err: any) => {
+		// 			console.log('err');
+		// 			console.log(err);
+		// 		},
+		// 	);
+		// }, 2000);
 	});
 	peer.on('data', (d: any) => {
 		//  console.log(JSON.parse(d));

@@ -8,7 +8,6 @@ const socket_io_client_1 = __importDefault(require("socket.io-client"));
 const NDIMediaStream_1 = require("./NDIMediaStream");
 const NDIMediaTrack_1 = require("./NDIMediaTrack");
 const WRTC_1 = require("./WRTC");
-const NDI_1 = require("./NDI");
 let localId = null;
 let remoteId = null;
 let peer = null;
@@ -20,17 +19,21 @@ const config = {
         name: 'TEST',
         persistent: false,
     },
+    preview: {
+        videoUrl: 'rtp://127.0.0.1:50505',
+        audioUrl: 'rtp://127.0.0.1:50510',
+    },
     iceServers: [
         { urls: 'stun:stun.l.google.com:19302' },
         { urls: 'stun:global.stun.twilio.com:3478?transport=udp' },
     ],
 };
-NDI_1.findNDISources().then(sources => {
-    console.log(sources);
-});
-NDI_1.findNDISources().then(sources => {
-    console.log(sources);
-});
+// findNDISources().then(sources => {
+// 	console.log(sources);
+// });
+// findNDISources().then(sources => {
+// 	console.log(sources);
+// });
 function getTestOptions() {
     return {
         config,
@@ -95,23 +98,26 @@ function bridged() {
     });
     peer.on('connect', (s) => {
         console.log('++++++++++++++++++++++++++=CONNECTED');
-        setTimeout(() => {
-            const test = {
-                test: 'HELLO',
-            };
-            const p = peer;
-            p.send(JSON.stringify(test));
-            // removeStream();
-            // replaceTrack();
-            // peer._pc.getSenders().then((s: any) => console.log(s));
-            // peer._pc.getReceivers().then((s: any) => console.log(s));
-            peer._pc.getStatsOld((stats) => {
-                console.log(stats);
-            }, (err) => {
-                console.log('err');
-                console.log(err);
-            });
-        }, 2000);
+        // setTimeout(() => {
+        // 	const test = {
+        // 		test: 'HELLO',
+        // 	};
+        // 	const p = peer as any;
+        // 	p.send(JSON.stringify(test));
+        // 	// removeStream();
+        // 	// replaceTrack();
+        // 	// peer._pc.getSenders().then((s: any) => console.log(s));
+        // 	// peer._pc.getReceivers().then((s: any) => console.log(s));
+        // 	peer._pc.getStatsOld(
+        // 		(stats: any) => {
+        // 			console.log(stats);
+        // 		},
+        // 		(err: any) => {
+        // 			console.log('err');
+        // 			console.log(err);
+        // 		},
+        // 	);
+        // }, 2000);
     });
     peer.on('data', (d) => {
         //  console.log(JSON.parse(d));

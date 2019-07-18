@@ -6,6 +6,7 @@ import { NDIMediaTrack } from './NDIMediaTrack';
 import { NDIPeerConfiguration } from './NDIPeerConfiguration';
 import { RTPSenderInterface, RTPReceiverInterface } from './RTPSenderReceiver';
 import { ndiLogger } from './Logger';
+import { PreviewStreamer } from './PreviewStreamer';
 
 const iceConnectionStates = [
 	'new',
@@ -46,13 +47,20 @@ export class RTCPeerConnection {
 	private signaling: Signaling;
 	private channel?: RTCDataChannel;
 	private created: Promise<void>;
-	private ssrcs: Map<string, any> = new Map();
+	private preview?: PreviewStreamer;
 
 	//
 
 	constructor(private configuration: NDIPeerConfiguration) {
 		this.signaling = new Signaling(this);
 		this.signaling.spawn();
+		//
+		if (configuration.preview) {
+			this.preview = new PreviewStreamer(
+				configuration.preview,
+				configuration.ndi.name,
+			);
+		}
 		//
 		this.created = this.createNativePeer();
 	}
@@ -170,6 +178,11 @@ export class RTCPeerConnection {
 		ndiLogger.info('Closing PeerConnection');
 		this.signaling.destroy();
 		this.signaling = null;
+		//
+		if (this.preview) {
+			this.preview.destroy();
+			this.preview = undefined;
+		}
 	}
 
 	//
@@ -206,6 +219,22 @@ export class RTCPeerConnection {
 
 	public _getChannel() {
 		return this.channel;
+	}
+
+	public _onAddTrack(track?: object) {
+		if (this.ontrack) {
+			this.ontrack(track);
+		}
+		//
+		if (this.preview) {
+			this.preview.spawn();
+		}
+	}
+
+	public _onRemoveTrack(track?: object) {
+		if (this.preview) {
+			this.preview.destroy();
+		}
 	}
 
 	//

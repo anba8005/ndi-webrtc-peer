@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const RTCDataChannel_1 = require("./RTCDataChannel");
 const Signaling_1 = require("./Signaling");
 const Logger_1 = require("./Logger");
+const PreviewStreamer_1 = require("./PreviewStreamer");
 const iceConnectionStates = [
     'new',
     'checking',
@@ -33,9 +34,12 @@ class RTCPeerConnection {
     //
     constructor(configuration) {
         this.configuration = configuration;
-        this.ssrcs = new Map();
         this.signaling = new Signaling_1.Signaling(this);
         this.signaling.spawn();
+        //
+        if (configuration.preview) {
+            this.preview = new PreviewStreamer_1.PreviewStreamer(configuration.preview, configuration.ndi.name);
+        }
         //
         this.created = this.createNativePeer();
     }
@@ -146,6 +150,11 @@ class RTCPeerConnection {
         Logger_1.ndiLogger.info('Closing PeerConnection');
         this.signaling.destroy();
         this.signaling = null;
+        //
+        if (this.preview) {
+            this.preview.destroy();
+            this.preview = undefined;
+        }
     }
     //
     _updateIceConnectionState(state) {
@@ -174,6 +183,20 @@ class RTCPeerConnection {
     }
     _getChannel() {
         return this.channel;
+    }
+    _onAddTrack(track) {
+        if (this.ontrack) {
+            this.ontrack(track);
+        }
+        //
+        if (this.preview) {
+            this.preview.spawn();
+        }
+    }
+    _onRemoveTrack(track) {
+        if (this.preview) {
+            this.preview.destroy();
+        }
     }
     //
     request(command, payload) {
