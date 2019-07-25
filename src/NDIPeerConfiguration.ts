@@ -5,16 +5,20 @@ export interface PreviewConfiguration {
 	audioOptions?: string[];
 	width?: number;
 	height?: number;
+	outputMode?: 'default' | 'square'; // not compatible with vertical
+}
+
+export interface NDIConfiguration {
+	name: string;
+	width?: number;
+	height?: number;
+	frameRate?: number;
+	persistent?: boolean;
+	outputMode?: 'default' | 'vertical' | 'square';
 }
 
 export interface NDIPeerConfiguration extends RTCConfiguration {
-	ndi: {
-		name: string;
-		width?: number;
-		height?: number;
-		frameRate?: number;
-		persistent?: boolean;
-	};
+	ndi: NDIConfiguration;
 	preview?: PreviewConfiguration;
 	cpuAdaptation?: boolean;
 }

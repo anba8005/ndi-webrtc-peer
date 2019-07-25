@@ -19,7 +19,7 @@ let stream = new NDIMediaStream(
 		{ echoCancellation: false },
 		true,
 		640,
-		480,
+		360,
 	),
 );
 const streamTimeout = 5000;
@@ -27,7 +27,10 @@ const streamTimeout = 5000;
 const config: NDIPeerConfiguration = {
 	ndi: {
 		name: 'TEST',
-		persistent: false,
+		// persistent: false,
+		// width: 1280,
+		// height: 720,
+		// outputMode: 'square',
 	},
 	preview: {
 		videoUrl: 'rtp://127.0.0.1:50505',
@@ -58,13 +61,13 @@ function getTestOptions(): any {
 			// offerToReceiveVideo: false,
 			// offerToReceiveAudio: false,
 		},
-		initiator: true,
+		initiator: false,
 		// stream,
 		wrtc: WRTC,
 	};
 }
 
-const io = IO('http://localhost:5000/');
+const io = IO('wss://backend.gyvaitv.lt');
 io.on('connect', () => {
 	io.emit('emit', 'p2p.join', {
 		room: 'test',

@@ -51,6 +51,10 @@ export class RTCPeerConnection {
 
 	//
 
+	private receivedTracks: Map<string, string> = new Map();
+
+	//
+
 	constructor(private configuration: NDIPeerConfiguration) {
 		this.signaling = new Signaling(this);
 		this.signaling.spawn();
@@ -183,6 +187,8 @@ export class RTCPeerConnection {
 			this.preview.destroy();
 			this.preview = undefined;
 		}
+		//
+		this.receivedTracks.clear();
 	}
 
 	//
@@ -221,23 +227,44 @@ export class RTCPeerConnection {
 		return this.channel;
 	}
 
-	public _onAddTrack(track?: object) {
+	public _onAddTrack(track: any) {
 		if (this.ontrack) {
 			this.ontrack(track);
 		}
 		//
-		if (this.preview) {
+		if (this.preview && this.shouldSpawnPreview(track)) {
 			this.preview.spawn();
 		}
 	}
 
-	public _onRemoveTrack(track?: object) {
-		if (this.preview) {
+	public _onRemoveTrack(track: any) {
+		if (this.preview && this.shouldDestroyPreview(track)) {
 			this.preview.destroy();
 		}
 	}
 
 	//
+
+	private shouldSpawnPreview(track: any) {
+		this.receivedTracks.set(track.id, track.streams[0].id);
+		return true;
+	}
+
+	private shouldDestroyPreview(track: any) {
+		//
+		let should = false;
+		const stream = this.receivedTracks.get(track.id);
+		this.receivedTracks.forEach((value, key) => {
+			if (key !== track.id) {
+				should = should || stream !== value;
+			}
+		});
+
+		//
+		this.receivedTracks.delete(track.id);
+		//
+		return this.receivedTracks.size === 0 || should;
+	}
 
 	private request<T>(command: string, payload: object): Promise<T> {
 		return this.created.then(() => {
@@ -246,6 +273,13 @@ export class RTCPeerConnection {
 	}
 
 	private createNativePeer() {
-		return this.signaling.request<void>('createPeer', this.configuration);
+		const config: any = this.configuration;
+		// update preview with ndi config from preview streamer
+		if (this.preview) {
+			config.preview = this.preview.getNDIConfig(this.configuration.ndi);
+		}
+		// send signal
+		// ndiLogger.info(config);
+		return this.signaling.request<void>('createPeer', config);
 	}
 }
