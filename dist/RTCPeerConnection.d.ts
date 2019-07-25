@@ -21,6 +21,7 @@ export declare class RTCPeerConnection {
     private channel?;
     private created;
     private preview?;
+    private receivedTracks;
     constructor(configuration: NDIPeerConfiguration);
     setLocalDescription(desc: RTCSessionDescription): Promise<void>;
     setRemoteDescription(desc: RTCSessionDescription): Promise<void>;
@@ -41,8 +42,10 @@ export declare class RTCPeerConnection {
     _updateSignalingState(state: number): void;
     _onDataChannel(name: string): void;
     _getChannel(): RTCDataChannel;
-    _onAddTrack(track?: object): void;
-    _onRemoveTrack(track?: object): void;
+    _onAddTrack(track: any): void;
+    _onRemoveTrack(track: any): void;
+    private shouldSpawnPreview;
+    private shouldDestroyPreview;
     private request;
     private createNativePeer;
 }

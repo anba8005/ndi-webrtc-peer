@@ -34,6 +34,8 @@ class RTCPeerConnection {
     //
     constructor(configuration) {
         this.configuration = configuration;
+        //
+        this.receivedTracks = new Map();
         this.signaling = new Signaling_1.Signaling(this);
         this.signaling.spawn();
         //
@@ -155,6 +157,8 @@ class RTCPeerConnection {
             this.preview.destroy();
             this.preview = undefined;
         }
+        //
+        this.receivedTracks.clear();
     }
     //
     _updateIceConnectionState(state) {
@@ -189,23 +193,48 @@ class RTCPeerConnection {
             this.ontrack(track);
         }
         //
-        if (this.preview) {
+        if (this.preview && this.shouldSpawnPreview(track)) {
             this.preview.spawn();
         }
     }
     _onRemoveTrack(track) {
-        if (this.preview) {
+        if (this.preview && this.shouldDestroyPreview(track)) {
             this.preview.destroy();
         }
     }
     //
+    shouldSpawnPreview(track) {
+        this.receivedTracks.set(track.id, track.streams[0].id);
+        return true;
+    }
+    shouldDestroyPreview(track) {
+        //
+        let should = false;
+        const stream = this.receivedTracks.get(track.id);
+        this.receivedTracks.forEach((value, key) => {
+            if (key !== track.id) {
+                should = should || stream !== value;
+            }
+        });
+        //
+        this.receivedTracks.delete(track.id);
+        //
+        return this.receivedTracks.size === 0 || should;
+    }
     request(command, payload) {
         return this.created.then(() => {
             return this.signaling.request(command, payload);
         });
     }
     createNativePeer() {
-        return this.signaling.request('createPeer', this.configuration);
+        const config = this.configuration;
+        // update preview with ndi config from preview streamer
+        if (this.preview) {
+            config.preview = this.preview.getNDIConfig(this.configuration.ndi);
+        }
+        // send signal
+        // ndiLogger.info(config);
+        return this.signaling.request('createPeer', config);
     }
 }
 exports.RTCPeerConnection = RTCPeerConnection;

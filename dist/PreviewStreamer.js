@@ -14,9 +14,8 @@ const DEFAULT_CONFIG = {
     audioOptions: [],
 };
 class PreviewStreamer {
-    constructor(_config, _ndiName) {
+    constructor(_config, ndiName) {
         this._config = _config;
-        this._ndiName = _ndiName;
         this._spawned = false;
         this._ffmpegErrorListener = (e) => {
             if (e.message.indexOf('ffmpeg was killed with signal SIGKILL') !== -1 &&
@@ -40,6 +39,7 @@ class PreviewStreamer {
         };
         Object.assign(_config, DEFAULT_CONFIG); // set defaults
         this._ffmpegRetry = new RetryWithTimeout_1.RetryWithTimeout(this._restartFfmpeg);
+        this._ndiName = 'z_preview_' + ndiName;
     }
     spawn() {
         if (this._spawned) {
@@ -70,7 +70,6 @@ class PreviewStreamer {
         ]);
         // add video
         if (this._config.videoUrl) {
-            const size = this._config.width + 'x' + this._config.height;
             this._ffmpeg
                 .output(this._config.videoUrl)
                 .videoCodec('libx264')
@@ -78,8 +77,6 @@ class PreviewStreamer {
                 .addOutputOption('-pix_fmt yuv420p')
                 .addOutputOption('-threads 2')
                 .withNoAudio()
-                .size(size)
-                .autopad(true, 'black')
                 .outputFormat('rtp');
         }
         // add audio
@@ -105,6 +102,23 @@ class PreviewStreamer {
         this._ffmpegRetry.reset();
         this._spawned = false;
         this._ffmpeg.kill('SIGKILL');
+    }
+    getNDIConfig(master) {
+        let outputMode = this._config.outputMode;
+        if (!outputMode) {
+            // try to copy from master
+            if (master.outputMode !== 'vertical') {
+                outputMode = master.outputMode;
+            }
+        }
+        //
+        return {
+            name: this._ndiName,
+            width: this._config.width,
+            height: this._config.height,
+            outputMode,
+            persistent: false,
+        };
     }
 }
 exports.PreviewStreamer = PreviewStreamer;

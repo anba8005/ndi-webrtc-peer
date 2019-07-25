@@ -12,12 +12,11 @@ let localId = null;
 let remoteId = null;
 let peer = null;
 let name = 'ANBA8005-DESKTOP (OBS)';
-let stream = new NDIMediaStream_1.NDIMediaStream(new NDIMediaTrack_1.NDIMediaTrack(name, true, true, { echoCancellation: false }, true, 640, 480));
+let stream = new NDIMediaStream_1.NDIMediaStream(new NDIMediaTrack_1.NDIMediaTrack(name, true, true, { echoCancellation: false }, true, 640, 360));
 const streamTimeout = 5000;
 const config = {
     ndi: {
         name: 'TEST',
-        persistent: false,
     },
     preview: {
         videoUrl: 'rtp://127.0.0.1:50505',
@@ -45,12 +44,12 @@ function getTestOptions() {
         // offerToReceiveVideo: false,
         // offerToReceiveAudio: false,
         },
-        initiator: true,
+        initiator: false,
         // stream,
         wrtc: WRTC_1.WRTC,
     };
 }
-const io = socket_io_client_1.default('http://localhost:5000/');
+const io = socket_io_client_1.default('wss://backend.gyvaitv.lt');
 io.on('connect', () => {
     io.emit('emit', 'p2p.join', {
         room: 'test',
