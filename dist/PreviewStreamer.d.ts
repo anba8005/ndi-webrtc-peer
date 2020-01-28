@@ -1,10 +1,10 @@
 import { PreviewConfiguration, NDIConfiguration } from './NDIPeerConfiguration';
 export declare class PreviewStreamer {
-    private _config;
     private _spawned;
     private _ffmpeg;
     private _ffmpegRetry;
     private _ndiName;
+    private _config;
     constructor(_config: PreviewConfiguration, ndiName: string);
     spawn(): void;
     destroy(): void;

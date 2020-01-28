@@ -10,12 +10,16 @@ const RetryWithTimeout_1 = require("./RetryWithTimeout");
 const DEFAULT_CONFIG = {
     width: 160,
     height: 90,
-    videoOptions: ['-preset veryfast', '-g 25', '-tune zerolatency'],
+    videoOptions: [
+        '-preset veryfast',
+        '-g 25',
+        '-tune zerolatency',
+        '-profile baseline',
+    ],
     audioOptions: [],
 };
 class PreviewStreamer {
     constructor(_config, ndiName) {
-        this._config = _config;
         this._spawned = false;
         this._ffmpegErrorListener = (e) => {
             if (e.message.indexOf('ffmpeg was killed with signal SIGKILL') !== -1 &&
@@ -37,7 +41,8 @@ class PreviewStreamer {
                 this._ffmpeg.run();
             }
         };
-        Object.assign(_config, DEFAULT_CONFIG); // set defaults
+        const defaultConfig = Object.assign({}, DEFAULT_CONFIG);
+        this._config = Object.assign(defaultConfig, _config); // set defaults
         this._ffmpegRetry = new RetryWithTimeout_1.RetryWithTimeout(this._restartFfmpeg);
         this._ndiName = 'z_preview_' + ndiName;
     }
