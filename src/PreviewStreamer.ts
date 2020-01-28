@@ -7,7 +7,12 @@ import { RetryWithTimeout } from './RetryWithTimeout';
 const DEFAULT_CONFIG: PreviewConfiguration = {
 	width: 160,
 	height: 90,
-	videoOptions: ['-preset veryfast', '-g 25', '-tune zerolatency'],
+	videoOptions: [
+		'-preset veryfast',
+		'-g 25',
+		'-tune zerolatency',
+		'-profile baseline',
+	],
 	audioOptions: [],
 };
 
@@ -16,9 +21,11 @@ export class PreviewStreamer {
 	private _ffmpeg: FfmpegCommand;
 	private _ffmpegRetry: RetryWithTimeout;
 	private _ndiName: string;
+	private _config: PreviewConfiguration;
 
-	constructor(private _config: PreviewConfiguration, ndiName: string) {
-		Object.assign(_config, DEFAULT_CONFIG); // set defaults
+	constructor(_config: PreviewConfiguration, ndiName: string) {
+		const defaultConfig = Object.assign({}, DEFAULT_CONFIG);
+		this._config = Object.assign(defaultConfig, _config); // set defaults
 		this._ffmpegRetry = new RetryWithTimeout(this._restartFfmpeg);
 		this._ndiName = 'z_preview_' + ndiName;
 	}
