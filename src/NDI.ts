@@ -113,10 +113,15 @@ function getExecutableName() {
 }
 
 function getPackagedWorkerPath() {
-	return path.join(
-		path.dirname(require.main.filename),
-		'..' + path.sep + 'native' + path.sep,
-	);
+	let dirname = path.dirname(require.main.filename);
+	//
+	if (dirname.indexOf('node_modules' + path.sep + 'moleculer') > -1) {
+		dirname += '..' + path.sep + '..' + path.sep;
+	} else {
+		dirname += '..' + path.sep;
+	}
+	//
+	return path.join(dirname, 'native' + path.sep);
 }
 
 function getTmpWorkerPath() {

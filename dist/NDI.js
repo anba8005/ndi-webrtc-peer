@@ -116,7 +116,16 @@ function getExecutableName() {
     return 'ndi-webrtc-peer-worker' + (win32 ? '.exe' : '');
 }
 function getPackagedWorkerPath() {
-    return path_1.default.join(path_1.default.dirname(require.main.filename), '..' + path_1.default.sep + 'native' + path_1.default.sep);
+    let dirname = path_1.default.dirname(require.main.filename);
+    //
+    if (dirname.indexOf('node_modules' + path_1.default.sep + 'moleculer') > -1) {
+        dirname += '..' + path_1.default.sep + '..' + path_1.default.sep;
+    }
+    else {
+        dirname += '..' + path_1.default.sep;
+    }
+    //
+    return path_1.default.join(dirname, 'native' + path_1.default.sep);
 }
 function getTmpWorkerPath() {
     return tempDirectory + path_1.default.sep;
