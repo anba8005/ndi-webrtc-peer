@@ -116,9 +116,9 @@ function getPackagedWorkerPath() {
 	let dirname = path.dirname(require.main.filename);
 	//
 	if (dirname.indexOf('node_modules' + path.sep + 'moleculer') > -1) {
-		dirname += '..' + path.sep + '..' + path.sep;
+		dirname = path.join(dirname, '..' + path.sep + '..' + path.sep + '..');
 	} else {
-		dirname += '..' + path.sep;
+		dirname = path.join(dirname, '..' + path.sep);
 	}
 	//
 	return path.join(dirname, 'native' + path.sep);
