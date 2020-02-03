@@ -27,7 +27,9 @@ export class PreviewStreamer {
 		const defaultConfig = Object.assign({}, DEFAULT_CONFIG);
 		this._config = Object.assign(defaultConfig, _config); // set defaults
 		this._ffmpegRetry = new RetryWithTimeout(this._restartFfmpeg);
-		this._ndiName = 'z_preview_' + ndiName;
+		this._ndiName = this._config.separateNDISource
+			? 'z_preview_' + ndiName
+			: ndiName;
 	}
 
 	public spawn() {
@@ -71,6 +73,9 @@ export class PreviewStreamer {
 				.addOutputOption('-threads 2')
 				.withNoAudio()
 				.outputFormat('rtp');
+			if (!this._config.separateNDISource) {
+				this._ffmpeg.withSize(this._config.width + 'x' + this._config.height);
+			}
 		}
 
 		// add audio
@@ -103,6 +108,14 @@ export class PreviewStreamer {
 	}
 
 	public getNDIConfig(master: NDIConfiguration): NDIConfiguration {
+		if (this._config.separateNDISource) {
+			return this._getSeparateNDIConfig(master);
+		} else {
+			return undefined;
+		}
+	}
+
+	public _getSeparateNDIConfig(master: NDIConfiguration): NDIConfiguration {
 		let outputMode = this._config.outputMode;
 		if (!outputMode) {
 			// try to copy from master

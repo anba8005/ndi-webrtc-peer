@@ -9,6 +9,7 @@ export declare class PreviewStreamer {
     spawn(): void;
     destroy(): void;
     getNDIConfig(master: NDIConfiguration): NDIConfiguration;
+    _getSeparateNDIConfig(master: NDIConfiguration): NDIConfiguration;
     private _ffmpegErrorListener;
     private _ffmpegEndListener;
     private _restartFfmpeg;

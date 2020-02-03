@@ -6,6 +6,7 @@ export interface PreviewConfiguration {
     width?: number;
     height?: number;
     outputMode?: 'default' | 'square';
+    separateNDISource?: boolean;
 }
 export interface NDIConfiguration {
     name: string;
