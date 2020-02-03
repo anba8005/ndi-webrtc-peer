@@ -74,9 +74,7 @@ export class PreviewStreamer {
 				.addOutputOption('-pix_fmt yuv420p')
 				.outputFormat('rtp');
 			if (!this._config.separateNDISource) {
-				this._ffmpeg.addOutputOption(
-					'-s ' + this._config.width + 'x' + this._config.height,
-				);
+				this._ffmpeg.withSize(this._config.width + 'x' + this._config.height);
 			}
 		}
 
