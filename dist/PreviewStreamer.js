@@ -83,15 +83,10 @@ class PreviewStreamer {
                 .addOutputOptions(this._config.videoOptions)
                 .addOutputOption('-threads 1')
                 .withNoAudio()
+                .addOutputOption('-pix_fmt yuv420p')
                 .outputFormat('rtp');
             if (!this._config.separateNDISource) {
-                this._ffmpeg.withVideoFilters([
-                    'format=yuv420p',
-                    'scale=' + this._config.width + ':' + this._config.height,
-                ]);
-            }
-            else {
-                this._ffmpeg.addOutputOption('-pix_fmt yuv420p');
+                this._ffmpeg.addOutputOption('-s ' + this._config.width + 'x' + this._config.height);
             }
         }
         // add audio
