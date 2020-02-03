@@ -69,12 +69,16 @@ export class PreviewStreamer {
 				.output(this._config.videoUrl)
 				.videoCodec('libx264')
 				.addOutputOptions(this._config.videoOptions)
-				.addOutputOption('-pix_fmt yuv420p')
-				.addOutputOption('-threads 2')
+				.addOutputOption('-threads 1')
 				.withNoAudio()
 				.outputFormat('rtp');
 			if (!this._config.separateNDISource) {
-				this._ffmpeg.withSize(this._config.width + 'x' + this._config.height);
+				this._ffmpeg.withVideoFilters([
+					'format=yuv420p',
+					'scale=' + this._config.width + ':' + this._config.height,
+				]);
+			} else {
+				this._ffmpeg.addOutputOption('-pix_fmt yuv420p');
 			}
 		}
 
