@@ -7,6 +7,7 @@ const Logger_1 = require("./Logger");
 const fluent_ffmpeg_1 = __importDefault(require("fluent-ffmpeg"));
 const os_1 = __importDefault(require("os"));
 const RetryWithTimeout_1 = require("./RetryWithTimeout");
+const NDI_1 = require("./NDI");
 const DEFAULT_CONFIG = {
     width: 160,
     height: 90,
@@ -66,6 +67,8 @@ class PreviewStreamer {
         this._ffmpeg = fluent_ffmpeg_1.default({
             logger: Logger_1.ndiLogger,
         });
+        // set executable path
+        this._ffmpeg.setFfmpegPath(NDI_1.getFFMpegName());
         // add input
         this._ffmpeg
             .input(os_1.default.hostname().toUpperCase() + ' (' + this._ndiName + ')')

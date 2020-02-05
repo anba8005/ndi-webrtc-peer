@@ -112,8 +112,15 @@ function getTmpWorkerName() {
     return getTmpWorkerPath() + getExecutableName();
 }
 exports.getTmpWorkerName = getTmpWorkerName;
+function getFFMpegName() {
+    return getPackagedWorkerPath() + getFFMpegExecutableName();
+}
+exports.getFFMpegName = getFFMpegName;
 function getExecutableName() {
     return 'ndi-webrtc-peer-worker' + (win32 ? '.exe' : '');
+}
+function getFFMpegExecutableName() {
+    return 'ffmpeg' + (win32 ? '.exe' : '');
 }
 function getPackagedWorkerPath() {
     let dirname = path_1.default.dirname(require.main.filename);

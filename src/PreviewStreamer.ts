@@ -3,6 +3,7 @@ import { ndiLogger } from './Logger';
 import Ffmpeg, { FfmpegCommand } from 'fluent-ffmpeg';
 import os from 'os';
 import { RetryWithTimeout } from './RetryWithTimeout';
+import { getFFMpegName } from './NDI';
 
 const DEFAULT_CONFIG: PreviewConfiguration = {
 	width: 160,
@@ -52,6 +53,9 @@ export class PreviewStreamer {
 		this._ffmpeg = Ffmpeg({
 			logger: ndiLogger,
 		});
+
+		// set executable path
+		this._ffmpeg.setFfmpegPath(getFFMpegName());
 
 		// add input
 		this._ffmpeg

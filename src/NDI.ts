@@ -108,8 +108,16 @@ export function getTmpWorkerName() {
 	return getTmpWorkerPath() + getExecutableName();
 }
 
+export function getFFMpegName() {
+	return getPackagedWorkerPath() + getFFMpegExecutableName();
+}
+
 function getExecutableName() {
 	return 'ndi-webrtc-peer-worker' + (win32 ? '.exe' : '');
+}
+
+function getFFMpegExecutableName() {
+	return 'ffmpeg' + (win32 ? '.exe' : '');
 }
 
 function getPackagedWorkerPath() {
