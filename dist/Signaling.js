@@ -35,8 +35,11 @@ class Signaling {
         this.reader.on('line', line => this.onProcessLine(line));
     }
     destroy() {
-        this.reader.close();
-        this.writeLine('STOP');
+        try {
+            this.reader.close();
+            this.writeLine('STOP');
+        }
+        catch (e) { }
     }
     request(command, payload) {
         const promise = new Promise((resolve, reject) => {

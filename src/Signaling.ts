@@ -62,8 +62,10 @@ export class Signaling {
 	}
 
 	public destroy() {
-		this.reader.close();
-		this.writeLine('STOP');
+		try {
+			this.reader.close();
+			this.writeLine('STOP');
+		} catch (e) {}
 	}
 
 	public request<T>(command: string, payload: object): Promise<T> {
