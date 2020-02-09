@@ -145,19 +145,19 @@ export class PreviewStreamer {
 			return;
 		}
 		//
-		ndiLogger.warn('%s -> %s', this._ndiName, e.message);
+		ndiLogger.warn(this._ndiName + ' -> ' + e.message);
 		if (this._spawned) {
 			this._ffmpegRetry.try();
 		}
 	};
 
 	private _ffmpegEndListener = () => {
-		ndiLogger.info('%s -> ffmpeg exited', this._ndiName);
+		ndiLogger.info(this._ndiName + ' -> ffmpeg exited');
 	};
 
 	private _restartFfmpeg = () => {
 		if (this._spawned) {
-			ndiLogger.info('%s -> restarting ffmpeg', this._ndiName);
+			ndiLogger.info(this._ndiName + ' -> restarting ffmpeg');
 			this._ffmpeg.run();
 		}
 	};

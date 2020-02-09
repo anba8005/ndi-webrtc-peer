@@ -44,7 +44,7 @@ export class Signaling {
 		const workerName = isNativeCodePackaged()
 			? getTmpWorkerName()
 			: getPackagedWorkerName();
-		ndiLogger.info('Starting %s', workerName);
+		ndiLogger.info('Starting ' + workerName);
 		this.process = spawn(workerName, this.createArguments());
 		this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
 		//
@@ -179,7 +179,7 @@ export class Signaling {
 	}
 
 	private onProcessExit(code: number, signal: string) {
-		ndiLogger.info('process exited %d %s', code, signal);
+		ndiLogger.info('process exited -> ' + code + ' -> ' + signal);
 		for (const value of this.resolutions.values()) {
 			value.reject('onProcessExit:signaling closed');
 		}

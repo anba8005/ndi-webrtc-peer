@@ -28,17 +28,17 @@ class PreviewStreamer {
                 return;
             }
             //
-            Logger_1.ndiLogger.warn('%s -> %s', this._ndiName, e.message);
+            Logger_1.ndiLogger.warn(this._ndiName + ' -> ' + e.message);
             if (this._spawned) {
                 this._ffmpegRetry.try();
             }
         };
         this._ffmpegEndListener = () => {
-            Logger_1.ndiLogger.info('%s -> ffmpeg exited', this._ndiName);
+            Logger_1.ndiLogger.info(this._ndiName + ' -> ffmpeg exited');
         };
         this._restartFfmpeg = () => {
             if (this._spawned) {
-                Logger_1.ndiLogger.info('%s -> restarting ffmpeg', this._ndiName);
+                Logger_1.ndiLogger.info(this._ndiName + ' -> restarting ffmpeg');
                 this._ffmpeg.run();
             }
         };

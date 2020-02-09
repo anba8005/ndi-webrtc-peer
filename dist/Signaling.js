@@ -18,7 +18,7 @@ class Signaling {
         const workerName = NDI_1.isNativeCodePackaged()
             ? NDI_1.getTmpWorkerName()
             : NDI_1.getPackagedWorkerName();
-        Logger_1.ndiLogger.info('Starting %s', workerName);
+        Logger_1.ndiLogger.info('Starting ' + workerName);
         this.process = child_process_1.spawn(workerName, this.createArguments());
         this.process.on('exit', (code, signal) => this.onProcessExit(code, signal));
         //
@@ -146,7 +146,7 @@ class Signaling {
         });
     }
     onProcessExit(code, signal) {
-        Logger_1.ndiLogger.info('process exited %d %s', code, signal);
+        Logger_1.ndiLogger.info('process exited -> ' + code + ' -> ' + signal);
         for (const value of this.resolutions.values()) {
             value.reject('onProcessExit:signaling closed');
         }
