@@ -13,5 +13,4 @@ export declare class PreviewStreamer {
     private _ffmpegErrorListener;
     private _ffmpegEndListener;
     private _restartFfmpeg;
-    private _beforeExitListener;
 }

@@ -42,11 +42,6 @@ class PreviewStreamer {
                 this._ffmpeg.run();
             }
         };
-        this._beforeExitListener = () => {
-            this._ffmpeg.kill('SIGKILL');
-            this._ffmpeg.kill('SIGKILL');
-            this._ffmpeg.kill('SIGTERM');
-        };
         const defaultConfig = Object.assign({}, DEFAULT_CONFIG);
         this._config = Object.assign(defaultConfig, _config); // set defaults
         this._ffmpegRetry = new RetryWithTimeout_1.RetryWithTimeout(this._restartFfmpeg);
@@ -110,8 +105,6 @@ class PreviewStreamer {
         this._ffmpeg.addListener('end', this._ffmpegEndListener);
         // ndiLogger.info(this._ffmpeg._getArguments());
         this._ffmpeg.run();
-        //
-        process.on('beforeExit', this._beforeExitListener);
     }
     destroy() {
         if (!this._spawned) {
@@ -120,7 +113,6 @@ class PreviewStreamer {
         //
         Logger_1.ndiLogger.info('Stopping preview streamer for ' + this._ndiName);
         this._ffmpegRetry.reset();
-        process.off('beforeExit', this._beforeExitListener);
         this._spawned = false;
         this._ffmpeg.kill('SIGKILL');
     }
