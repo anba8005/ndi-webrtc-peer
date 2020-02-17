@@ -1,12 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -23,22 +15,20 @@ const win32 = os_1.default.platform() === 'win32';
 //
 //
 let signaling;
-function findNDISources() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!signaling) {
-            signaling = new Signaling_1.Signaling();
-            signaling.spawn();
-        }
-        //
-        try {
-            const sources = yield signaling.request('findNDISources', {});
-            return sources;
-        }
-        catch (e) {
-            shutdownNDISourcesFinder();
-            throw e;
-        }
-    });
+async function findNDISources() {
+    if (!signaling) {
+        signaling = new Signaling_1.Signaling();
+        signaling.spawn();
+    }
+    //
+    try {
+        const sources = await signaling.request('findNDISources', {});
+        return sources;
+    }
+    catch (e) {
+        shutdownNDISourcesFinder();
+        throw e;
+    }
 }
 exports.findNDISources = findNDISources;
 function shutdownNDISourcesFinder() {
@@ -54,33 +44,31 @@ exports.shutdownNDISourcesFinder = shutdownNDISourcesFinder;
 //
 //
 //
-function initializeNativeCode() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!isNativeCodePackaged()) {
-            return false;
-        }
-        //
-        const srcName = getPackagedWorkerName();
-        const dstName = getTmpWorkerName();
-        //
-        yield copyFile(srcName, dstName);
-        //
-        if (win32) {
-            // copy aux files
-            const srcPath = getPackagedWorkerPath();
-            const dstPath = getTmpWorkerPath();
-            yield copyFile(srcPath + 'avutil-56.dll', dstPath + 'avutil-56.dll');
-            yield copyFile(srcPath + 'swscale-5.dll', dstPath + 'swscale-5.dll');
-            yield copyFile(srcPath + 'Processing.NDI.Lib.x64.dll', dstPath + 'Processing.NDI.Lib.x64.dll');
-        }
-        //
-        if (!win32) {
-            // chmod +x binary
-            yield chmod(dstName, 755);
-        }
-        //
-        return true;
-    });
+async function initializeNativeCode() {
+    if (!isNativeCodePackaged()) {
+        return false;
+    }
+    //
+    const srcName = getPackagedWorkerName();
+    const dstName = getTmpWorkerName();
+    //
+    await copyFile(srcName, dstName);
+    //
+    if (win32) {
+        // copy aux files
+        const srcPath = getPackagedWorkerPath();
+        const dstPath = getTmpWorkerPath();
+        await copyFile(srcPath + 'avutil-56.dll', dstPath + 'avutil-56.dll');
+        await copyFile(srcPath + 'swscale-5.dll', dstPath + 'swscale-5.dll');
+        await copyFile(srcPath + 'Processing.NDI.Lib.x64.dll', dstPath + 'Processing.NDI.Lib.x64.dll');
+    }
+    //
+    if (!win32) {
+        // chmod +x binary
+        await chmod(dstName, 755);
+    }
+    //
+    return true;
 }
 exports.initializeNativeCode = initializeNativeCode;
 function isNativeCodePackaged() {
