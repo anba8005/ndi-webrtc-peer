@@ -24,6 +24,7 @@ export interface DecoderConfiguration {
 export interface EncoderConfiguration {
     hardware: 'none' | 'vaapi';
     software?: Codecs[];
+    disableH264HighProfile?: boolean;
 }
 export interface NDIPeerConfiguration extends RTCConfiguration {
     ndi: NDIConfiguration;
