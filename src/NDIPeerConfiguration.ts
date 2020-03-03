@@ -18,12 +18,16 @@ export interface NDIConfiguration {
 	outputMode?: 'default' | 'vertical' | 'square';
 }
 
+type Codecs = 'vp8' | 'vp9' | 'h264' | 'h265';
+
 export interface DecoderConfiguration {
 	hardware: 'none' | 'vaapi';
+	software?: Codecs[]; // forced software codecs (not supported by hardware)
 }
 
 export interface EncoderConfiguration {
 	hardware: 'none' | 'vaapi';
+	software?: Codecs[]; // forced software codecs (not supported by hardware)
 }
 
 export interface NDIPeerConfiguration extends RTCConfiguration {

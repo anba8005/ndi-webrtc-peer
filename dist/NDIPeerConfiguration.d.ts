@@ -16,11 +16,14 @@ export interface NDIConfiguration {
     persistent?: boolean;
     outputMode?: 'default' | 'vertical' | 'square';
 }
+declare type Codecs = 'vp8' | 'vp9' | 'h264' | 'h265';
 export interface DecoderConfiguration {
     hardware: 'none' | 'vaapi';
+    software?: Codecs[];
 }
 export interface EncoderConfiguration {
     hardware: 'none' | 'vaapi';
+    software?: Codecs[];
 }
 export interface NDIPeerConfiguration extends RTCConfiguration {
     ndi: NDIConfiguration;
@@ -29,3 +32,4 @@ export interface NDIPeerConfiguration extends RTCConfiguration {
     decoder?: DecoderConfiguration;
     encoder?: EncoderConfiguration;
 }
+export {};
