@@ -6,7 +6,7 @@ function createUniqueId() {
     return uniqueId;
 }
 class NDIMediaTrack {
-    constructor(name, video = true, audio = true, audioOptions = {}, lowBandwidth, width, height) {
+    constructor(name, video = true, audio = true, audioOptions = {}, lowBandwidth, width, height, channelOffset, numChannels) {
         this.id = createUniqueId().toString();
         this.name = name;
         this.video = video;
@@ -15,6 +15,8 @@ class NDIMediaTrack {
         this.lowBandwidth = lowBandwidth;
         this.width = width;
         this.height = height;
+        this.channelOffset = channelOffset;
+        this.numChannels = numChannels;
     }
 }
 exports.NDIMediaTrack = NDIMediaTrack;

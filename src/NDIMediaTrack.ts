@@ -23,6 +23,8 @@ export class NDIMediaTrack {
 	public audioOptions: AudioOptions;
 	public width?: number;
 	public height?: number;
+	public channelOffset?: number;
+	public numChannels?: number;
 	public lowBandwidth: boolean;
 
 	public replaceTrack?: (
@@ -39,6 +41,8 @@ export class NDIMediaTrack {
 		lowBandwidth?: boolean,
 		width?: number,
 		height?: number,
+		channelOffset?: number,
+		numChannels?: number,
 	) {
 		this.id = createUniqueId().toString();
 		this.name = name;
@@ -48,5 +52,7 @@ export class NDIMediaTrack {
 		this.lowBandwidth = lowBandwidth;
 		this.width = width;
 		this.height = height;
+		this.channelOffset = channelOffset;
+		this.numChannels = numChannels;
 	}
 }

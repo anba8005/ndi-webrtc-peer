@@ -15,7 +15,9 @@ export declare class NDIMediaTrack {
     audioOptions: AudioOptions;
     width?: number;
     height?: number;
+    channelOffset?: number;
+    numChannels?: number;
     lowBandwidth: boolean;
     replaceTrack?: (oldTrack: NDIMediaTrack, newTrack: NDIMediaTrack, stream: NDIMediaStream) => Promise<void>;
-    constructor(name: string, video?: boolean, audio?: boolean, audioOptions?: AudioOptions, lowBandwidth?: boolean, width?: number, height?: number);
+    constructor(name: string, video?: boolean, audio?: boolean, audioOptions?: AudioOptions, lowBandwidth?: boolean, width?: number, height?: number, channelOffset?: number, numChannels?: number);
 }
