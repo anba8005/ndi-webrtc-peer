@@ -13,6 +13,7 @@ class Signaling {
         this.peer = peer;
         this.lastCorrelation = 0;
         this.resolutions = new Map();
+        this.destroyed = false;
     }
     spawn() {
         const workerName = NDI_1.isNativeCodePackaged()
@@ -36,6 +37,7 @@ class Signaling {
     }
     destroy() {
         try {
+            this.destroyed = true;
             this.reader.close();
             this.writeLine('STOP');
         }
@@ -149,7 +151,14 @@ class Signaling {
         });
     }
     onProcessExit(code, signal) {
-        Logger_1.ndiLogger.info('process exited -> ' + code + ' -> ' + signal);
+        if (!this.destroyed) {
+            this.peer._onError('Process exited unexpectedly');
+            Logger_1.ndiLogger.error('process exited -> ' + code + ' -> ' + signal);
+        }
+        else {
+            Logger_1.ndiLogger.info('process exited -> ' + code + ' -> ' + signal);
+        }
+        //
         for (const value of this.resolutions.values()) {
             value.reject('onProcessExit:signaling closed');
         }

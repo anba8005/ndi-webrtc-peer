@@ -243,6 +243,12 @@ export class RTCPeerConnection {
 		}
 	}
 
+	public _onError(error: any) {
+		if (this.channel) {
+			this.channel._onError(error);
+		}
+	}
+
 	//
 
 	private shouldSpawnPreview(track: any) {

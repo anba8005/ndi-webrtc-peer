@@ -38,6 +38,8 @@ export class Signaling {
 	private lastCorrelation: number = 0;
 	private resolutions: Map<number, IResolution> = new Map();
 
+	private destroyed: boolean = false;
+
 	constructor(private peer?: RTCPeerConnection) {}
 
 	public spawn() {
@@ -63,6 +65,7 @@ export class Signaling {
 
 	public destroy() {
 		try {
+			this.destroyed = true;
 			this.reader.close();
 			this.writeLine('STOP');
 		} catch (e) {}
@@ -181,7 +184,13 @@ export class Signaling {
 	}
 
 	private onProcessExit(code: number, signal: string) {
-		ndiLogger.info('process exited -> ' + code + ' -> ' + signal);
+		if (!this.destroyed) {
+			this.peer._onError('Process exited unexpectedly');
+			ndiLogger.error('process exited -> ' + code + ' -> ' + signal);
+		} else {
+			ndiLogger.info('process exited -> ' + code + ' -> ' + signal);
+		}
+		//
 		for (const value of this.resolutions.values()) {
 			value.reject('onProcessExit:signaling closed');
 		}

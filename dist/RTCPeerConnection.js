@@ -190,6 +190,11 @@ class RTCPeerConnection {
             this.preview.destroy();
         }
     }
+    _onError(error) {
+        if (this.channel) {
+            this.channel._onError(error);
+        }
+    }
     //
     shouldSpawnPreview(track) {
         this.receivedTracks.set(track.id, track.streams[0].id);

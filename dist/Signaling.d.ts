@@ -5,6 +5,7 @@ export declare class Signaling {
     private reader;
     private lastCorrelation;
     private resolutions;
+    private destroyed;
     constructor(peer?: RTCPeerConnection);
     spawn(): void;
     destroy(): void;

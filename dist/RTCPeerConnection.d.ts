@@ -44,6 +44,7 @@ export declare class RTCPeerConnection {
     _getChannel(): RTCDataChannel;
     _onAddTrack(track: any): void;
     _onRemoveTrack(track: any): void;
+    _onError(error: any): void;
     private shouldSpawnPreview;
     private shouldDestroyPreview;
     private request;
