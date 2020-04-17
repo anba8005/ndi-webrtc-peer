@@ -35,6 +35,9 @@ class Signaling {
         });
         this.reader.on('line', line => this.onProcessLine(line));
     }
+    get isDestroyed() {
+        return this.destroyed;
+    }
     destroy() {
         try {
             this.destroyed = true;

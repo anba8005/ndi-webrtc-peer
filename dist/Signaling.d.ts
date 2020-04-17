@@ -8,6 +8,7 @@ export declare class Signaling {
     private destroyed;
     constructor(peer?: RTCPeerConnection);
     spawn(): void;
+    readonly isDestroyed: boolean;
     destroy(): void;
     request<T>(command: string, payload: object): Promise<T>;
     private onProcessLine;

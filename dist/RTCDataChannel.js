@@ -38,7 +38,7 @@ class RTCDataChannel {
         }
     }
     _onError(error) {
-        if (this.onerror) {
+        if (this.onerror && !this.signaling.isDestroyed) {
             this.onerror(error);
         }
     }

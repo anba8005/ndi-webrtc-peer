@@ -63,6 +63,10 @@ export class Signaling {
 		this.reader.on('line', line => this.onProcessLine(line));
 	}
 
+	public get isDestroyed() {
+		return this.destroyed;
+	}
+
 	public destroy() {
 		try {
 			this.destroyed = true;
