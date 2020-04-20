@@ -27,7 +27,7 @@ export interface EncoderConfiguration {
     disableH264HighProfile?: boolean;
 }
 export interface NDIPeerConfiguration extends RTCConfiguration {
-    ndi: NDIConfiguration;
+    ndi?: NDIConfiguration;
     preview?: PreviewConfiguration;
     cpuAdaptation?: boolean;
     decoder?: DecoderConfiguration;

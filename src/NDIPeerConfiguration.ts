@@ -32,7 +32,7 @@ export interface EncoderConfiguration {
 }
 
 export interface NDIPeerConfiguration extends RTCConfiguration {
-	ndi: NDIConfiguration;
+	ndi?: NDIConfiguration;
 	preview?: PreviewConfiguration;
 	cpuAdaptation?: boolean;
 	decoder?: DecoderConfiguration;
