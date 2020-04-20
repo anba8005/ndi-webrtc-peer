@@ -1,4 +1,5 @@
 export interface PreviewConfiguration {
+    name?: string;
     videoUrl?: string;
     audioUrl?: string;
     videoOptions?: string[];

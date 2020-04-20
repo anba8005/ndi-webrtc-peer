@@ -1,4 +1,5 @@
 export interface PreviewConfiguration {
+	name?: string; // auto-creating from main ndi name if undefined
 	videoUrl?: string;
 	audioUrl?: string;
 	videoOptions?: string[];

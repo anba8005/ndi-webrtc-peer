@@ -32,7 +32,10 @@ class RTCPeerConnection {
         this.signaling.spawn();
         //
         if (configuration.preview) {
-            this.preview = new PreviewStreamer_1.PreviewStreamer(configuration.preview, configuration.ndi.name);
+            const name = configuration.preview.name
+                ? configuration.preview.name
+                : configuration.ndi.name;
+            this.preview = new PreviewStreamer_1.PreviewStreamer(configuration.preview, name);
         }
         //
         this.created = this.createNativePeer();
