@@ -122,9 +122,14 @@ export class PreviewStreamer {
 	private _getSeparateNDIConfig(master: NDIConfiguration): NDIConfiguration {
 		let outputMode = this._config.outputMode;
 		if (!outputMode) {
-			// try to copy from master
-			if (master.outputMode !== 'vertical') {
-				outputMode = master.outputMode;
+			if (master) {
+				// try to copy from master
+				if (master.outputMode !== 'vertical') {
+					outputMode = master.outputMode;
+				}
+			} else {
+				// set default
+				outputMode = 'default';
 			}
 		}
 		//
