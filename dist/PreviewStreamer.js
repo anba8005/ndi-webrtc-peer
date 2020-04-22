@@ -12,6 +12,8 @@ const DEFAULT_CONFIG = {
     width: 160,
     height: 90,
     videoOptions: [
+        '-vcodec libx264',
+        '-pix_fmt yuv420p',
         '-preset veryfast',
         '-g 25',
         '-tune zerolatency',
@@ -82,11 +84,9 @@ class PreviewStreamer {
         if (this._config.videoUrl) {
             this._ffmpeg
                 .output(this._config.videoUrl)
-                .videoCodec('libx264')
                 .addOutputOptions(this._config.videoOptions)
                 .addOutputOption('-threads 1')
                 .withNoAudio()
-                .addOutputOption('-pix_fmt yuv420p')
                 .outputFormat('rtp');
             if (!this._config.separateNDISource) {
                 this._ffmpeg.withSize(this._config.width + 'x' + this._config.height);
