@@ -36,7 +36,7 @@ export interface NDIPeerConfiguration extends RTCConfiguration {
 	ndi?: NDIConfiguration;
 	preview?: PreviewConfiguration;
 	cpuAdaptation?: boolean;
-	enableNonDefaultRoutes?: boolean;
+	useNonDefaultRoutes?: boolean;
 	decoder?: DecoderConfiguration;
 	encoder?: EncoderConfiguration;
 }
