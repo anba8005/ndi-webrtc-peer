@@ -58,8 +58,6 @@ async function initializeNativeCode() {
         // copy aux files
         const srcPath = getPackagedWorkerPath();
         const dstPath = getTmpWorkerPath();
-        await copyFile(srcPath + 'avutil-56.dll', dstPath + 'avutil-56.dll');
-        await copyFile(srcPath + 'swscale-5.dll', dstPath + 'swscale-5.dll');
         await copyFile(srcPath + 'Processing.NDI.Lib.x64.dll', dstPath + 'Processing.NDI.Lib.x64.dll');
     }
     //
