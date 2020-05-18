@@ -77,28 +77,34 @@ class PreviewStreamer {
             .inputFormat('libndi_newtek')
             .inputOptions([
             '-flags +low_delay',
-            '-protocol_whitelist file,udp,rtp',
+            '-protocol_whitelist file,udp,rtp,http',
             '-fflags +nobuffer',
         ]);
         // add video
         if (this._config.videoUrl) {
+            const format = this._config.videoUrl.startsWith('http')
+                ? 'mpegts'
+                : 'rtp';
             this._ffmpeg
                 .output(this._config.videoUrl)
                 .addOutputOptions(this._config.videoOptions)
                 .addOutputOption('-threads 1')
                 .withNoAudio()
-                .outputFormat('rtp');
+                .outputFormat(format);
             if (!this._config.separateNDISource) {
                 this._ffmpeg.withSize(this._config.width + 'x' + this._config.height);
             }
         }
         // add audio
         if (this._config.audioUrl) {
+            const format = this._config.videoUrl.startsWith('http')
+                ? 'mpegts'
+                : 'rtp';
             this._ffmpeg
                 .output(this._config.audioUrl)
                 .audioCodec('libopus')
                 .withNoVideo()
-                .outputFormat('rtp');
+                .outputFormat(format);
         }
         // add event listeners
         this._ffmpeg.addListener('error', this._ffmpegErrorListener);
