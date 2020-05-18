@@ -56,22 +56,24 @@ export async function initializeNativeCode() {
 	//
 	const srcName = getPackagedWorkerName();
 	const dstName = getTmpWorkerName();
-	//
 	await copyFile(srcName, dstName);
 	//
+	// copy aux files
+	const srcPath = getPackagedWorkerPath();
+	const dstPath = getTmpWorkerPath();
+	await copyFile(
+		srcPath + getFFMpegExecutableName(),
+		dstPath + getFFMpegExecutableName(),
+	);
+	//
 	if (win32) {
-		// copy aux files
-		const srcPath = getPackagedWorkerPath();
-		const dstPath = getTmpWorkerPath();
 		await copyFile(
 			srcPath + 'Processing.NDI.Lib.x64.dll',
 			dstPath + 'Processing.NDI.Lib.x64.dll',
 		);
-	}
-	//
-	if (!win32) {
-		// chmod +x binary
+	} else {
 		await chmod(dstName, 755);
+		await chmod(dstPath + getFFMpegExecutableName(), 755);
 	}
 	//
 	return true;
@@ -106,8 +108,12 @@ export function getTmpWorkerName() {
 	return getTmpWorkerPath() + getExecutableName();
 }
 
-export function getFFMpegName() {
+export function getPackagedFFMpegName() {
 	return getPackagedWorkerPath() + getFFMpegExecutableName();
+}
+
+export function getTmpFFMpegName() {
+	return getTmpWorkerPath() + getFFMpegExecutableName();
 }
 
 function getExecutableName() {

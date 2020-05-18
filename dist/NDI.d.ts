@@ -8,4 +8,5 @@ export declare function initializeNativeCode(): Promise<boolean>;
 export declare function isNativeCodePackaged(): boolean;
 export declare function getPackagedWorkerName(): string;
 export declare function getTmpWorkerName(): string;
-export declare function getFFMpegName(): string;
+export declare function getPackagedFFMpegName(): string;
+export declare function getTmpFFMpegName(): string;

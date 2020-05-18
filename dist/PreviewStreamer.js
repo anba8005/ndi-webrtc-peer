@@ -70,7 +70,10 @@ class PreviewStreamer {
             logger: Logger_1.ndiLogger,
         });
         // set executable path
-        this._ffmpeg.setFfmpegPath(NDI_1.getFFMpegName());
+        const ffmpegName = NDI_1.isNativeCodePackaged()
+            ? NDI_1.getTmpFFMpegName()
+            : NDI_1.getPackagedFFMpegName();
+        this._ffmpeg.setFfmpegPath(ffmpegName);
         // add input
         this._ffmpeg
             .input(os_1.default.hostname().toUpperCase() + ' (' + this._ndiName + ')')
