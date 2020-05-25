@@ -11,6 +11,8 @@ const os_1 = __importDefault(require("os"));
 const tempDirectory = require('temp-dir');
 const chmod = util_1.default.promisify(fs_1.default.chmod);
 const win32 = os_1.default.platform() === 'win32';
+const mac = os_1.default.platform() === 'darwin';
+const linux = os_1.default.platform() === 'linux';
 //
 //
 //
@@ -61,7 +63,11 @@ async function initializeNativeCode() {
     if (win32) {
         await copyFile(srcPath + 'Processing.NDI.Lib.x64.dll', dstPath + 'Processing.NDI.Lib.x64.dll');
     }
-    else {
+    else if (mac) {
+        await copyFile(srcPath + 'libndi.4.dylib', dstPath + 'libndi.4.dylib');
+    }
+    //
+    if (mac || linux) {
         await chmod(dstName, 755);
         await chmod(dstPath + getFFMpegExecutableName(), 755);
     }
@@ -107,10 +113,24 @@ function getTmpFFMpegName() {
 }
 exports.getTmpFFMpegName = getTmpFFMpegName;
 function getExecutableName() {
-    return 'ndi-webrtc-peer-worker' + (win32 ? '.exe' : '');
+    return 'ndi-webrtc-peer-worker' + getExecutableExtension();
 }
 function getFFMpegExecutableName() {
-    return 'ffmpeg' + (win32 ? '.exe' : '');
+    return 'ffmpeg' + getExecutableExtension();
+}
+function getExecutableExtension() {
+    if (win32) {
+        return '.exe';
+    }
+    else if (mac) {
+        return '.mac';
+    }
+    else if (linux) {
+        return '.linux';
+    }
+    else {
+        throw new Error('Invalid architecture ' + os_1.default.platform);
+    }
 }
 function getPackagedWorkerPath() {
     let dirname = path_1.default.dirname(require.main.filename);

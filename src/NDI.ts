@@ -9,6 +9,8 @@ const tempDirectory = require('temp-dir');
 const chmod = util.promisify(fs.chmod);
 
 const win32 = os.platform() === 'win32';
+const mac = os.platform() === 'darwin';
+const linux = os.platform() === 'linux';
 
 //
 //
@@ -71,7 +73,11 @@ export async function initializeNativeCode() {
 			srcPath + 'Processing.NDI.Lib.x64.dll',
 			dstPath + 'Processing.NDI.Lib.x64.dll',
 		);
-	} else {
+	} else if (mac) {
+		await copyFile(srcPath + 'libndi.4.dylib', dstPath + 'libndi.4.dylib');
+	}
+	//
+	if (mac || linux) {
 		await chmod(dstName, 755);
 		await chmod(dstPath + getFFMpegExecutableName(), 755);
 	}
@@ -117,11 +123,23 @@ export function getTmpFFMpegName() {
 }
 
 function getExecutableName() {
-	return 'ndi-webrtc-peer-worker' + (win32 ? '.exe' : '');
+	return 'ndi-webrtc-peer-worker' + getExecutableExtension();
 }
 
 function getFFMpegExecutableName() {
-	return 'ffmpeg' + (win32 ? '.exe' : '');
+	return 'ffmpeg' + getExecutableExtension();
+}
+
+function getExecutableExtension() {
+	if (win32) {
+		return '.exe';
+	} else if (mac) {
+		return '.mac';
+	} else if (linux) {
+		return '.linux';
+	} else {
+		throw new Error('Invalid architecture ' + os.platform);
+	}
 }
 
 function getPackagedWorkerPath() {
