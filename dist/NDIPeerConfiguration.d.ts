@@ -23,7 +23,7 @@ export interface DecoderConfiguration {
     software?: Codecs[];
 }
 export interface EncoderConfiguration {
-    hardware: 'none' | 'vaapi';
+    hardware: 'none' | 'vaapi' | 'mfx' | 'videotoolbox';
     software?: Codecs[];
     disableH264HighProfile?: boolean;
 }
