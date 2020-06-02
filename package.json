@@ -1,6 +1,6 @@
 {
 	"name": "ndi-webrtc-peer",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "NDI <=> WEBRTC peer",
 	"author": "anba8005",
 	"license": "MIT",
