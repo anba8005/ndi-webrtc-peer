@@ -34,9 +34,7 @@ export class PreviewStreamer {
 		const defaultConfig = Object.assign({}, DEFAULT_CONFIG);
 		this._config = Object.assign(defaultConfig, _config); // set defaults
 		this._ffmpegRetry = new RetryWithTimeout(this._restartFfmpeg);
-		this._ndiName = this._config.separateNDISource
-			? 'z_preview_' + ndiName
-			: ndiName;
+		this._ndiName = this._config.separateNDISource ? 'z__' + ndiName : ndiName;
 	}
 
 	public spawn() {
