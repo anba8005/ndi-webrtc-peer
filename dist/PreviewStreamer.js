@@ -41,7 +41,13 @@ class PreviewStreamer {
         this._restartFfmpeg = () => {
             if (this._spawned) {
                 Logger_1.ndiLogger.info(this._ndiName + ' -> restarting ffmpeg');
-                this._ffmpeg.run();
+                try {
+                    this._ffmpeg.run();
+                }
+                catch (e) {
+                    Logger_1.ndiLogger.warn('Error restarting preview streamer for ' + this._ndiName);
+                    Logger_1.ndiLogger.warn(e.message);
+                }
             }
         };
         const defaultConfig = Object.assign({}, DEFAULT_CONFIG);
@@ -111,7 +117,13 @@ class PreviewStreamer {
         this._ffmpeg.addListener('error', this._ffmpegErrorListener);
         this._ffmpeg.addListener('end', this._ffmpegEndListener);
         // ndiLogger.info(this._ffmpeg._getArguments());
-        this._ffmpeg.run();
+        try {
+            this._ffmpeg.run();
+        }
+        catch (e) {
+            Logger_1.ndiLogger.warn('Error running preview streamer for ' + this._ndiName);
+            Logger_1.ndiLogger.warn(e.message);
+        }
     }
     destroy() {
         if (!this._spawned) {
@@ -121,7 +133,13 @@ class PreviewStreamer {
         Logger_1.ndiLogger.info('Stopping preview streamer for ' + this._ndiName);
         this._ffmpegRetry.reset();
         this._spawned = false;
-        this._ffmpeg.kill('SIGKILL');
+        try {
+            this._ffmpeg.kill('SIGKILL');
+        }
+        catch (e) {
+            Logger_1.ndiLogger.warn('Error killing preview streamer for ' + this._ndiName);
+            Logger_1.ndiLogger.warn(e.message);
+        }
     }
     getNDIConfig(master) {
         if (this._config.separateNDISource) {

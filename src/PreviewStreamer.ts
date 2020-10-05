@@ -107,19 +107,28 @@ export class PreviewStreamer {
 		this._ffmpeg.addListener('end', this._ffmpegEndListener);
 
 		// ndiLogger.info(this._ffmpeg._getArguments());
-		this._ffmpeg.run();
+		try {
+			this._ffmpeg.run();
+		} catch (e) {
+			ndiLogger.warn('Error running preview streamer for ' + this._ndiName);
+			ndiLogger.warn(e.message);
+		}
 	}
 
 	public destroy() {
 		if (!this._spawned) {
 			return;
 		}
-
 		//
 		ndiLogger.info('Stopping preview streamer for ' + this._ndiName);
 		this._ffmpegRetry.reset();
 		this._spawned = false;
-		this._ffmpeg.kill('SIGKILL');
+		try {
+			this._ffmpeg.kill('SIGKILL');
+		} catch (e) {
+			ndiLogger.warn('Error killing preview streamer for ' + this._ndiName);
+			ndiLogger.warn(e.message);
+		}
 	}
 
 	public getNDIConfig(master: NDIConfiguration): NDIConfiguration {
@@ -174,7 +183,14 @@ export class PreviewStreamer {
 	private _restartFfmpeg = () => {
 		if (this._spawned) {
 			ndiLogger.info(this._ndiName + ' -> restarting ffmpeg');
-			this._ffmpeg.run();
+			try {
+				this._ffmpeg.run();
+			} catch (e) {
+				ndiLogger.warn(
+					'Error restarting preview streamer for ' + this._ndiName,
+				);
+				ndiLogger.warn(e.message);
+			}
 		}
 	};
 }
