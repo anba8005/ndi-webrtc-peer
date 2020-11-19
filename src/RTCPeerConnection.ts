@@ -64,6 +64,7 @@ export class RTCPeerConnection {
 				? configuration.preview.name
 				: configuration.ndi.name;
 			this.preview = new PreviewStreamer(configuration.preview, name);
+			this.preview.spawn();
 		}
 		//
 		this.created = this.createNativePeer();
@@ -231,17 +232,9 @@ export class RTCPeerConnection {
 		if (this.ontrack) {
 			this.ontrack(track);
 		}
-		//
-		if (this.preview && this.shouldSpawnPreview(track)) {
-			this.preview.spawn();
-		}
 	}
 
-	public _onRemoveTrack(track: any) {
-		if (this.preview && this.shouldDestroyPreview(track)) {
-			this.preview.destroy();
-		}
-	}
+	public _onRemoveTrack(track: any) {}
 
 	public _onError(error: any) {
 		if (this.channel) {
